@@ -11,6 +11,7 @@ module.exports = function (commander) {
       + '/anim      [query]   find an animated image<br>'
       + '/animated  [query]   find an animated image<br>'
       + '/face      [query]   find an image of a face<br>'
+      + '/meme                show a popular meme<br>'
       + '</pre>'
     );
   });

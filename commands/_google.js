@@ -21,17 +21,20 @@ module.exports = function (options, next) {
     url: 'http://ajax.googleapis.com/ajax/services/search/images',
     qs: q
   }, function (err, res, body) {
-    var images = JSON.parse(body);
-    if (images.responseData) {
-      images = images.responseData.results;
-      if (images && images.length > 0) {
-        var image = images[Math.floor(Math.random() * images.length)];
-        if (image && image.unescapedUrl) {
-          var url = image.unescapedUrl;
-          if (!/(.gif|.jpe?g|.png)$/i.test(url)) {
-            url =  + '#.png';
+    if (err) return console.error(err.stack || err);
+    if (body) {
+      var images = JSON.parse(body);
+      if (images.responseData) {
+        images = images.responseData.results;
+        if (images && images.length > 0) {
+          var image = images[Math.floor(Math.random() * images.length)];
+          if (image && image.unescapedUrl) {
+            var url = image.unescapedUrl;
+            if (!/(.gif|.jpe?g|.png)$/i.test(url)) {
+              url =  + '#.png';
+            }
+            next(url);
           }
-          next(url);
         }
       }
     }
