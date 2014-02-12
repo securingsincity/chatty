@@ -1,6 +1,6 @@
 {
-    "key": "saucy",
-    "name": "Saucy",
+    "key": "chatty",
+    "name": "Chatty",
     "description": "An add-on replacement for several popular hubot scripts",
     "vendor": {
         "name": "HipChat",
@@ -26,7 +26,7 @@
             "url": "{{localBaseUrl}}/webhook",
             "pattern": "^/\\w+\\s?",
             "event": "room_message",
-            "name": "Image Commands"
+            "name": "Chatty Commands Hook"
         }
     }
 }
