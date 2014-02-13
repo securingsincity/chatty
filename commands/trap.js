@@ -1,6 +1,6 @@
 module.exports = function (commander, logger) {
 
-  commander.on(/ackbar|trap/, function (event, response) {
+  commander.on(/^(ackbar|trap)$/, function (event, response) {
     response.random([
       'http://farm4.static.flickr.com/3572/3637082894_e23313f6fb_o.jpg',
       'http://6.asset.soup.io/asset/0610/8774_242b_500.jpeg',

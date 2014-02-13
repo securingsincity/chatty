@@ -3,14 +3,14 @@ var _ = require('lodash');
 
 module.exports = function (commander) {
 
-  commander.on(/youtube/, function (event, response) {
+  commander.on(/^youtube$/, function (event, response) {
     request.get({
       url: 'http://gdata.youtube.com/feeds/api/videos',
       qs: {
-        orderBy: 'relevance',
+        'orderBy': 'relevance',
         'max-results': 10,
-        alt: 'json',
-        q: event.input
+        'alt': 'json',
+        'q': event.input
       }
     }, function (err, res, body) {
       if (err) return console.error(err.stack || err);

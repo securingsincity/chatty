@@ -1,6 +1,6 @@
 module.exports = function (commander) {
 
-  commander.on(/chatty/, {format: 'html'}, function (event, response) {
+  commander.on(/^chatty$/, {format: 'html'}, function (event, response) {
     // TODO: generate this dynamically from docs in command modules
     var msg =
       '<b>Commands</b>' +
@@ -20,7 +20,9 @@ module.exports = function (commander) {
         '/mustache  [url|query]               mustachify a url or query result<br>',
         '/alot                                you like it alot?<br>',
         '/base64    [encode|decode] [input]   base64 encode or decode input<br>',
-        '/youtube   [query]                   find a video on youtube'
+        '/youtube   [query]                   find a video on youtube',
+        '/chat                                ask for something fun to chat about',
+        '/roll                                roll some dice (https://github.com/troygoode/node-roll)'
       ].sort().join('') +
       '</pre>';
     response.send(msg);

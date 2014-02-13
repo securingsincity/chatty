@@ -2,15 +2,15 @@ var request = require('request');
 
 module.exports = function (commander) {
 
-  commander.on(/img|image/, function (event, response) {
+  commander.on(/^(img|image)$/, function (event, response) {
     google({query: event.input}, response.send);
   });
 
-  commander.on(/anim|animate/, function (event, response) {
+  commander.on(/^(anim|animate)$/, function (event, response) {
     google({query: event.input, animated: true}, response.send);
   });
 
-  commander.on(/face/, function (event, response) {
+  commander.on(/^face$/, function (event, response) {
     google({query: event.input, face: true}, response.send);
   });
 

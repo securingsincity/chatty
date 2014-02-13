@@ -2,7 +2,7 @@ var _ = require('lodash');
 
 module.exports = function (commander, logger) {
 
-  commander.on(/shipit/, function (event, response) {
+  commander.on(/^shipit$/, function (event, response) {
     response.random([
       'https://img.skitch.com/20111026-r2wsngtu4jftwxmsytdke6arwd.png',
       'http://images.cheezburger.com/completestore/2011/11/2/aa83c0c4-2123-4bd3-8097-966c9461b30c.jpg',

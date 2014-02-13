@@ -1,6 +1,6 @@
 module.exports = function (commander) {
 
-  commander.on(/base64/, function (event, response) {
+  commander.on(/^base64$/, function (event, response) {
     var match = /(encode|decode)\s+(.*)/.exec(event.input);
     if (match) {
       var value;
