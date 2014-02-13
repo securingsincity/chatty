@@ -1,0 +1,23 @@
+Simple
+======
+
+- youtube
+- ship it
+- java (aliens guy)
+
+Require Config
+==============
+
+- meme generator (api key)
+- web sequence diagrams (credentials?  key?)
+
+Require Data Storage
+====================
+
+- karma
+
+General Text Matching
+=====================
+
+- ship it
+- java (aliens guy)
