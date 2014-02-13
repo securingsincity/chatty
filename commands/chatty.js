@@ -20,9 +20,9 @@ module.exports = function (commander) {
         '/mustache  [url|query]               mustachify a url or query result<br>',
         '/alot                                you like it alot?<br>',
         '/base64    [encode|decode] [input]   base64 encode or decode input<br>',
-        '/youtube   [query]                   find a video on youtube',
-        '/chat                                ask for something fun to chat about',
-        '/roll                                roll some dice (https://github.com/troygoode/node-roll)'
+        '/youtube   [query]                   find a video on youtube<br>',
+        '/chat                                ask for something fun to chat about<br>',
+        '/roll                                roll some dice (https://github.com/troygoode/node-roll)<br>'
       ].sort().join('') +
       '</pre>';
     response.send(msg);

@@ -1,23 +1,28 @@
-Simple
-======
+Framework
+=========
 
-- youtube
-- ship it
-- java (aliens guy)
+- dynamic command docs
+- dynamic descriptor webhooks (based on command and listener registrations)
+- commander 'hear' registration
+
+Commands
+========
+
+Simple
+
+- more from hubot-scripts
 
 Require Config
-==============
 
 - meme generator (api key)
 - web sequence diagrams (credentials?  key?)
 
 Require Data Storage
-====================
 
 - karma
 
 General Text Matching
-=====================
 
 - ship it
-- java (aliens guy)
+- fuck java
+- karma
