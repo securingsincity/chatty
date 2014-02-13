@@ -5,7 +5,7 @@ module.exports = function (commander) {
   commander.command({
     name: 'mustache',
     args: '<url>|<query>',
-    help: 'Mustachifies an image url or found with the query term',
+    help: 'Mustachifies an image url or image found with the query term',
     action: function (event, response) {
       var type = Math.floor(Math.random() * 6);
       if (/^https?:\/\/.*?\.(png|jpg|jpeg|gif)$/i.test(event.input)) {
