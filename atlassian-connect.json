@@ -21,12 +21,6 @@
         },
         "configurable": {
              "url": "{{localBaseUrl}}/config"
-        },
-        "webhook": [{
-            "url": "{{localBaseUrl}}/webhook",
-            "pattern": "^/\\w+\\s?",
-            "event": "room_message",
-            "name": "Chatty Commands Hook"
-        }]
+        }
     }
 }

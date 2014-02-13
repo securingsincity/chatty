@@ -1,9 +1,20 @@
 module.exports = function (commander) {
 
-  commander.on(/^java$/, function (event, response) {
-    response.random([
-      'https://s3.amazonaws.com/uploads.hipchat.com/10804/132391/qOJSVtvBWOLoorv/java.jpg'
-    ]);
+  commander.command({
+    name: 'java',
+    help: 'Java: you know you love it',
+    action: action
+  });
+
+  commander.spy({
+    hear: /\b(fuck(ing)?|hate)\s+java\b/,
+    action: action
   });
 
 };
+
+function action(event, response) {
+  response.random([
+    'https://s3.amazonaws.com/uploads.hipchat.com/10804/132391/qOJSVtvBWOLoorv/java.jpg'
+  ]);
+}

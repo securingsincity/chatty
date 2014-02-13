@@ -2,16 +2,31 @@ var request = require('request');
 
 module.exports = function (commander) {
 
-  commander.on(/^(img|image)$/, function (event, response) {
-    google({query: event.input}, response.send);
+  commander.command({
+    name: ['img', 'image'],
+    args: '<query>',
+    help: 'Finds an image matching the query term',
+    action: function (event, response) {
+      google({query: event.input}, response.send);
+    }
   });
 
-  commander.on(/^(anim|animate)$/, function (event, response) {
-    google({query: event.input, animated: true}, response.send);
+  commander.command({
+    name: ['anim', 'animated'],
+    args: '<query>',
+    help: 'Finds an animation matching the query term',
+    action: function (event, response) {
+      google({query: event.input, animated: true}, response.send);
+    }
   });
 
-  commander.on(/^face$/, function (event, response) {
-    google({query: event.input, face: true}, response.send);
+  commander.command({
+    name: ['face'],
+    args: '<query>',
+    help: 'Finds a face matching the query term',
+    action: function (event, response) {
+      google({query: event.input, face: true}, response.send);
+    }
   });
 
 };
