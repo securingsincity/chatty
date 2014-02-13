@@ -14,6 +14,8 @@ module.exports = function (commander) {
       + '/meme      [topic]?    show a meme by topic or popularity<br>'
       + '/java                  show us how you really feel<br>'
       + '/shipit                show a squirrel pic<br>'
+      + '/ackbar                it\'s a trap!<br>'
+      + '/trap                  it\'s a trap!<br>'
       + '/mustache  [url|query] mustachify a url or query result<br>'
       + '</pre>'
     );
