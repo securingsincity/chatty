@@ -3,7 +3,7 @@ var _ = require('lodash');
 
 module.exports = function (commander) {
 
-  commander.on('meme', function (event, response) {
+  commander.on(/meme/, function (event, response) {
     var action = 'Instances_Select_By' + (event.input ? 'Topic' : 'Popular');
     var q = {pageIndex: 0, pageSize: 10};
     if (event.input) {
