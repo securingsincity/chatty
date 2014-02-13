@@ -7,7 +7,7 @@ module.exports = function (commander) {
   });
 
   commander.spy({
-    hear: /\b(fuck(ing)?|hate)\s+java\b/,
+    hear: /\b((fuck(ing)?|hate)\s+java)|(java\s+sucks)\b/i,
     action: action
   });
 
