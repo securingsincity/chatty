@@ -29,6 +29,14 @@ module.exports = function (commander) {
     }
   });
 
+  commander.command({
+    name: ['facepalm'],
+    help: 'Finds a random facepalm matching the query term',
+    action: function (event, response) {
+      google({query: 'facepalm', face: true}, response.send);
+    }
+  });
+
 };
 
 function google(options, next) {
