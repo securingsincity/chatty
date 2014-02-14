@@ -12,7 +12,7 @@ module.exports = function (commander) {
         var subject = match[1];
         var subjectKey = 'karma:' + subject;
         store.get(subjectKey).then(function (karma) {
-          response.send(subject + ' has ' + karma + ' karma');
+          response.send(subject + ' has ' + (karma || 0) + ' karma');
         }, function () {
           response.send(subject + ' has 0 karma');
         });
