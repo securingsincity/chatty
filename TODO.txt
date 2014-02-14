@@ -1,9 +1,7 @@
 Framework
 =========
 
-- dynamic command docs
-- dynamic descriptor webhooks (based on command and listener registrations)
-- commander 'hear' registration
+- 
 
 Commands
 ========
@@ -19,10 +17,4 @@ Require Config
 
 Require Data Storage
 
-- karma
-
-General Text Matching
-
-- ship it
-- fuck java
-- karma
+- 
