@@ -2,7 +2,7 @@ module.exports = function (commander, logger) {
 
   commander.command({
     name: ['ackbar', 'trap'],
-    help: 'Displays a random Ackbar image',
+    help: 'Shows a random Ackbar image',
     action: action
   });
 
