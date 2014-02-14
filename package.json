@@ -1,5 +1,5 @@
 {
-  "name": "my-hipchat-add-on",
+  "name": "chatty",
   "version": "0.0.1",
   "private": true,
   "scripts": {

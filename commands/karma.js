@@ -10,8 +10,8 @@ module.exports = function (commander, logger) {
       var match = /\b(\w+)\b/.exec(event.input);
       if (match) {
         var subject = match[1];
-        var subjectKey = 'karma:' + subject;
-        store.get(subjectKey).then(function (karma) {
+        var subjectKey = key(subject);
+        store.gget(subjectKey).then(function (karma) {
           response.send(subject + ' has ' + (karma || 0) + ' karma');
         }, function () {
           response.send(subject + ' has 0 karma');
@@ -24,16 +24,20 @@ module.exports = function (commander, logger) {
     hear: /\b(\w+)\s*(\+\+|--)(?:[^+-]|$)/,
     action: function (event, response, store) {
       var subject = event.captures[0];
-      var subjectKey = 'karma:' + subject;
+      var subjectKey = key(subject);
       var add = event.captures[1] === '++';
-      store.get(subjectKey).then(function (karma) {
+      store.gget(subjectKey).then(function (karma) {
         karma = (karma || 0) + (add ? 1 : -1);
-        store.set(subjectKey, karma).then(function () {
+        store.gset(subjectKey, karma).then(function () {
           var changed = (add ? 'increased' : 'decreased');
           response.send(subject + '\'s karma has ' + changed + ' to ' + karma);
         });
       });
     }
   });
+
+  function key(subject) {
+    return 'karma:' + subject;
+  }
 
 };
