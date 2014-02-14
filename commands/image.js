@@ -31,7 +31,7 @@ module.exports = function (commander) {
 
   commander.command({
     name: ['facepalm'],
-    help: 'Finds a random facepalm matching the query term',
+    help: 'Finds a random facepalm image',
     action: function (event, response) {
       google({query: 'facepalm', face: true}, response.send);
     }
