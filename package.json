@@ -17,6 +17,7 @@
     "lodash": "~2.4.1",
     "roll": "~0.3.2",
     "cliff": "~0.1.8",
-    "escape-html": "~1.0.1"
+    "escape-html": "~1.0.1",
+    "jsdom": "~0.10.1"
   }
 }
