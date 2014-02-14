@@ -1,3 +1,5 @@
+// Port of https://github.com/github/hubot-scripts/blob/master/src/scripts/poem.coffee
+
 var request = require('request');
 var jsdom = require('jsdom');
 var _ = require('lodash');

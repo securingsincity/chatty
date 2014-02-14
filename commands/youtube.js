@@ -1,3 +1,5 @@
+// Port of https://github.com/github/hubot/blob/master/src/scripts/youtube.coffee
+
 var request = require('request');
 var _ = require('lodash');
 

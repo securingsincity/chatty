@@ -1,3 +1,5 @@
+// Port of https://github.com/github/hubot-scripts/blob/master/src/scripts/chat.coffee
+
 var request = require('request');
 
 module.exports = function (commander, logger) {

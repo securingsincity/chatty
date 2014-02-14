@@ -1,3 +1,5 @@
+// Port of https://github.com/github/hubot-scripts/blob/master/src/scripts/alot.coffee
+
 module.exports = function (commander, logger) {
 
   commander.command({

@@ -1,3 +1,5 @@
+// Port of https://github.com/github/hubot-scripts/blob/master/src/scripts/shipit.coffee
+
 var _ = require('lodash');
 
 module.exports = function (commander, logger) {

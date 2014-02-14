@@ -1,3 +1,5 @@
+// Port of https://github.com/github/hubot-scripts/blob/master/src/scripts/ferengi_rules_of_acquisition.coffee
+
 module.exports = function (commander, logger) {
 
   commander.spy({

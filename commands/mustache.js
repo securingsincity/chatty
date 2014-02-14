@@ -1,3 +1,5 @@
+// Port of https://github.com/github/hubot/blob/master/src/scripts/google-images.coffee
+
 var request = require('request');
 
 module.exports = function (commander, logger) {
