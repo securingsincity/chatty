@@ -1,6 +1,6 @@
 var request = require('request');
 
-module.exports = function (commander) {
+module.exports = function (commander, logger) {
 
   commander.command({
     name: 'chat',
@@ -17,7 +17,7 @@ module.exports = function (commander) {
           'Personal': 7
         }
       }, function (err, res, body) {
-        if (err) return console.error(err.stack || err);
+        if (err) return logger.error(err.stack || err);
         if (body) {
           var data = JSON.parse(body);
           if (data && data.text) {

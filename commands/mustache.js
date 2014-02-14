@@ -1,6 +1,6 @@
 var request = require('request');
 
-module.exports = function (commander) {
+module.exports = function (commander, logger) {
 
   commander.command({
     name: 'mustache',
@@ -20,10 +20,10 @@ module.exports = function (commander) {
     }
   });
 
-};
-
-function mustachify(url, next) {
-  if (url) {
-    next('http://mustachify.me/?src=' + encodeURIComponent(url));
+  function mustachify(url, next) {
+    if (url) {
+      next('http://mustachify.me/?src=' + encodeURIComponent(url));
+    }
   }
-}
+
+};

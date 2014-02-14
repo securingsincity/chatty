@@ -1,7 +1,7 @@
 var request = require('request');
 var _ = require('lodash');
 
-module.exports = function (commander) {
+module.exports = function (commander, logger) {
 
   commander.command({
     name: 'youtube',
@@ -16,7 +16,7 @@ module.exports = function (commander) {
           'q': event.input
         }
       }, function (err, res, body) {
-        if (err) return console.error(err.stack || err);
+        if (err) return logger.error(err.stack || err);
         if (body) {
           var data = JSON.parse(body);
           var videos = data.feed.entry;

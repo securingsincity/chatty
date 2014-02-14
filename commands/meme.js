@@ -1,7 +1,7 @@
 var request = require('request');
 var _ = require('lodash');
 
-module.exports = function (commander) {
+module.exports = function (commander, logger) {
 
   commander.command({
     name: 'meme',
@@ -18,7 +18,7 @@ module.exports = function (commander) {
         url: 'http://version1.api.memegenerator.net/' + action,
         qs: q
       }, function (err, res, body) {
-        if (err) return console.error(err.stack || err);
+        if (err) return logger.error(err.stack || err);
         if (body) {
           var data = JSON.parse(body);
           if (data && data.success && data.result.length > 0) {

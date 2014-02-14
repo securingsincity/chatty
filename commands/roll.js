@@ -1,6 +1,6 @@
 var roller = require('roll');
 
-module.exports = function (commander) {
+module.exports = function (commander, logger) {
 
   commander.command({
     name: 'roll',

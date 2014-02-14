@@ -1,6 +1,6 @@
 var _ = require('lodash');
 
-module.exports = function (commander) {
+module.exports = function (commander, logger) {
 
   commander.command({
     name: 'karma',
