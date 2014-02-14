@@ -19,7 +19,7 @@ module.exports = function (commander, logger) {
         'Ferengi Rule of Acquisition #19: <b>"Satisfaction is not guaranteed."</b> <i>-- ST: Legends of the Ferengi',
         'Ferengi Rule of Acquisition #21: <b>"Never place friendship above profit."</b> <i>-- ST:DS9, \'Rule of Acquisition\'</i>',
         'Ferengi Rule of Acquisition #22: <b>"A wise man can hear profit in the wind."</b> <i>-- ST:DS9, \'Rule of Acquisition\'</i>',
-        'Ferengi Rule of Acquisition #27: <b>"There is nothing more dangerous than an honest businessman <i>-- ST: Legends of the Ferengi',
+        'Ferengi Rule of Acquisition #27: <b>"There is nothing more dangerous than an honest businessman."</b> <i>-- ST: Legends of the Ferengi',
         'Ferengi Rule of Acquisition #28: <b>"Whisper your way to success."</b> <i>-- ST:DS9, \'Treachery, Faith, and the Great River\'</i>',
         'Ferengi Rule of Acquisition #31: <b>"Never make fun of a Ferengi\'s mother."</b> <i>-- ST:DS9, \'The Siege\'</i>',
         'Ferengi Rule of Acquisition #33: <b>"It never hurts to suck up to the boss."</b> <i>-- ST:DS9, \'Rule of Acquisition\', \'The Dogs of War\'</i>',
