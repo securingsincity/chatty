@@ -22,7 +22,7 @@ module.exports = function (commander) {
         if (body) {
           var data = JSON.parse(body);
           if (data && data.success && data.result.length > 0) {
-            var url = data.result[_.random(data.result.length)].instanceImageUrl;
+            var url = data.result[_.random(data.result.length - 1)].instanceImageUrl;
             response.send(url);
           }
         }

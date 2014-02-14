@@ -21,7 +21,7 @@ module.exports = function (commander) {
           var data = JSON.parse(body);
           var videos = data.feed.entry;
           if (videos) {
-            var video = videos[_.random(videos.length)];
+            var video = videos[_.random(videos.length - 1)];
             video.link.forEach(function (link) {
               if (link.rel === 'alternate' & link.type === 'text/html') {
                 response.send(link.href);
