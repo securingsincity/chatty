@@ -21,7 +21,7 @@ module.exports = function (commander, logger) {
   });
 
   commander.spy({
-    hear: /\b(\w+)\s*(\+\+|--)(?:[^+-]|$)/,
+    hear: /\b(\w+)\s?(\+\+|--)(?:[^+-]|$)/,
     action: function (event, response, store) {
       var subject = event.captures[0];
       var subjectKey = key(subject);
