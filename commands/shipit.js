@@ -11,7 +11,7 @@ module.exports = function (commander, logger) {
   });
 
   commander.spy({
-    hear: /\bship(\s+)?it\b/,
+    hear: /\bship\s?it\b/,
     action: action
   });
 
