@@ -10,12 +10,15 @@ module.exports = function (commander, logger) {
       var match = /\b(\w+)\b/.exec(event.input);
       if (match) {
         var subject = match[1];
-        if (_.contains(ignore, subject)) return;
+        if (ignore(subject)) {
+          return response.send(subject + ' is on the karma ignore list');
+        }
         var subjectKey = key(subject);
+        var name = displayName(event, subject);
         store.gget(subjectKey).then(function (karma) {
-          response.send(subject + ' has ' + (karma || 0) + ' karma');
+          response.send(name + ' has ' + (karma || 0) + ' karma');
         }, function () {
-          response.send(subject + ' has 0 karma');
+          response.send(name + ' has 0 karma');
         });
       }
     }
@@ -25,25 +28,44 @@ module.exports = function (commander, logger) {
     hear: /\b(\w+)\s?(\+\+|--)(?:[^+-]|$)/,
     action: function (event, response, store) {
       var subject = event.captures[0];
-      if (_.contains(ignore, subject)) return;
+      if (ignore(subject)) return;
       var subjectKey = key(subject);
       var add = event.captures[1] === '++';
+      if (ignore(subject) || event.from.mention_name === subject) {
+        return response.send(event.from.name + ', I am so disappointed in you!');
+      }
       store.gget(subjectKey).then(function (karma) {
         karma = (karma || 0) + (add ? 1 : -1);
         store.gset(subjectKey, karma).then(function () {
           var changed = (add ? 'increased' : 'decreased');
-          response.send(subject + '\'s karma has ' + changed + ' to ' + karma);
+          var name = displayName(event, subject);
+          response.send(name + '\'s karma has ' + changed + ' to ' + karma);
         });
       });
     }
   });
 
-  var ignore = [
+  var ignoreList = [
     'c'
   ];
 
+  function ignore(subject) {
+    subject = subject.toLowerCase();
+    return !ignoreList.every(function (entry) {
+      return entry !== subject;
+    });
+  }
+
   function key(subject) {
     return 'karma:' + subject;
+  }
+
+  function displayName(event, subject) {
+    var mention = _.find(event.mentions, function (entry) {
+      return entry.mention_name === subject;
+    });
+    if (mention) subject = mention.name;
+    return subject;
   }
 
 };
