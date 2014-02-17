@@ -10,6 +10,7 @@ module.exports = function (commander, logger) {
       var match = /\b(\w+)\b/.exec(event.input);
       if (match) {
         var subject = match[1];
+        if (_.contains(ignore, subject)) return;
         var subjectKey = key(subject);
         store.gget(subjectKey).then(function (karma) {
           response.send(subject + ' has ' + (karma || 0) + ' karma');
@@ -24,6 +25,7 @@ module.exports = function (commander, logger) {
     hear: /\b(\w+)\s?(\+\+|--)(?:[^+-]|$)/,
     action: function (event, response, store) {
       var subject = event.captures[0];
+      if (_.contains(ignore, subject)) return;
       var subjectKey = key(subject);
       var add = event.captures[1] === '++';
       store.gget(subjectKey).then(function (karma) {
@@ -35,6 +37,10 @@ module.exports = function (commander, logger) {
       });
     }
   });
+
+  var ignore = [
+    'c'
+  ];
 
   function key(subject) {
     return 'karma:' + subject;
