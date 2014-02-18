@@ -6,7 +6,7 @@ module.exports = function (commander, logger) {
     help: 'Prints this help message',
     opts: {format: 'html'},
     action: function (event, response) {
-      response.send(commander.help(event.input || 'commands'));
+      response.send(commander.help(event.input));
     }
   });
 
