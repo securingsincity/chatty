@@ -6,7 +6,7 @@ module.exports = function (commander, logger) {
     args: '[<filter>]',
     opts: {format: 'html'},
     action: function (event, response) {
-      response.send(commander.help(null, event.input));
+      response.send(commander.help('all', event.input));
     }
   });
 

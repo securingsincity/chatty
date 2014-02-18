@@ -8,12 +8,13 @@ module.exports = function (commander, logger) {
     opts: {format: 'html'},
     action: function (event, response) {
       var result;
+      var expr = event.input ? event.input : '1d6';
       try {
-        result = roller.roll(event.input).result;
+        result = roller.roll(expr).result;
       } catch (e) {
         result = 'invalid roll';
       }
-      response.send(event.from.name + ' rolled [' + event.input + ' = <b>' + result + '</b>]');
+      response.send(event.from.name + ' rolled [' + expr + ' = <b>' + result + '</b>]');
     }
   });
 
