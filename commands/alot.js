@@ -9,7 +9,8 @@ module.exports = function (commander, logger) {
   });
 
   commander.spy({
-    hear: /(^|\s)alot\b/,
+    hear: /(^|\s)alot\b/i,
+    help: 'Replies with an image of an \'alot\'',
     action: action
   });
 

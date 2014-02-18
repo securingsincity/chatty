@@ -2,12 +2,13 @@ module.exports = function (commander, logger) {
 
   commander.command({
     name: 'java',
-    help: 'Java: you know you love it',
+    help: 'Show the world how you feel about Java',
     action: action
   });
 
   commander.spy({
     hear: /\b((fuck(ing)?|hate)\s+java)|(java\s+sucks)\b/i,
+    help: 'Illustrates how you really feel about Java',
     action: action
   });
 

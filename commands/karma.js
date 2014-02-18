@@ -26,6 +26,7 @@ module.exports = function (commander, logger) {
 
   commander.spy({
     hear: /\b(\w+)\s?(\+\+|--)(?:[^+-]|$)/,
+    help: 'Adds or removes karma',
     action: function (event, response, store) {
       var subject = event.captures[0];
       if (ignore(subject)) return;

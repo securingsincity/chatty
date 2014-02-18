@@ -6,12 +6,13 @@ module.exports = function (commander, logger) {
 
   commander.command({
     name: 'shipit',
-    help: 'Shows a sweet squirrel picture',
+    help: 'Ship it, and ship it good!',
     action: action
   });
 
   commander.spy({
     hear: /\bship\s?it\b/,
+    help: 'Replies with an inspiring image',
     action: action
   });
 
