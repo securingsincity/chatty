@@ -47,7 +47,7 @@ module.exports = function (commander, logger) {
   });
 
   var ignoreList = [
-    'c'
+    // 'c'
   ];
 
   function ignore(subject) {
