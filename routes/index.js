@@ -1,9 +1,12 @@
 var http = require('request');
+var paths = require('path');
 
 module.exports = function (app, addon) {
 
   var hipchat = require('../lib/hipchat')(addon);
-  var commander = require('../lib/commander')(addon, hipchat);
+  var commands = paths.join(__dirname, '..', 'commands');
+  var commander = require('../lib/commander')(addon, hipchat, commands);
+  var config = require('./config')(app, addon, commander);
 
   // Root route. This route will serve the `addon.json` unless a homepage URL is
   // specified in `addon.json`.
@@ -21,20 +24,6 @@ module.exports = function (app, addon) {
           res.redirect('/atlassian-connect.json');
         }
       });
-    }
-  );
-
-  // This is an example route that's used by the default for the configuration page
-  app.get('/config',
-    // Authenticates the request using the JWT token in the request
-    addon.authenticate(),
-    function(req, res) {
-      // The `addon.authenticate()` middleware populates the following:
-      // * req.clientInfo: useful information about the add-on client such as the
-      //   clientKey, oauth info, and HipChat account info
-      // * req.context: contains the context data accompanying the request like
-      //   the roomId
-      res.render('config', req.context);
     }
   );
 
@@ -58,7 +47,7 @@ module.exports = function (app, addon) {
 
   // Clean up clients when uninstalled
   addon.on('uninstalled', function(id){
-    addon.settings.client.keys(id+':*', function(err, rep){
+    addon.settings.client.keys(id + ':*', function(err, rep){
       rep.forEach(function(k){
         addon.logger.info('Removing key:', k);
         addon.settings.client.del(k);

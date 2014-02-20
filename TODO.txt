@@ -8,6 +8,7 @@ Commands
 
 Simple
 
+- /clock
 - more from hubot-scripts
 
 Require Config
@@ -17,4 +18,13 @@ Require Config
 
 Require Data Storage
 
-- 
+- /store, /recall, /forget
+
+  e.g.
+
+  /store hangout http://google.com
+  /recall hangout
+  /forget hangout
+
+- /standup
+

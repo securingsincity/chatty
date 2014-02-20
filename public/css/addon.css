@@ -1,15 +1,77 @@
 /* add-on styles */
-.intro-header h1 {
-  font-size: 48px;
-  line-height: 60px;
-  padding-top: 20px;
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
 }
-.intro-header p.subtitle {
-  font-size: 24px;
-  line-height: 30px;
-  padding-bottom: 20px;
+.intro-header h1 {
+  margin-top: 0 !important;
+  font-size: 20px;
 }
 .main-panel .aui-page-panel-item {
   padding: 20px 40px 20px 0;
   height: 100px;
+}
+body {
+    background-color: transparent;
+}
+.centered {
+    text-align: center;
+}
+.aui-lozenge {
+  margin-right:2px;
+  text-transform: none;
+}
+span.script-loz {
+  cursor: pointer !important;
+}
+.no-top-margin {
+  margin-top:5px;
+}
+table.aui .right {
+  text-align:right;
+}
+table.aui>thead>tr>th, table.aui>tbody>tr>th, table.aui>thead>tr>td, table.aui>tbody>tr>td, table.aui>tfoot>tr>td {
+  vertical-align: middle;
+}
+table.aui tr.enabled {
+  background: transparent;
+}
+table.aui tr.disabled {
+  background: #e9e9e9;
+}
+.aui-group>.aui-item.script-add-sec {
+  vertical-align: bottom;
+  width:312px;
+}
+.script-add-sec form {
+  text-align:right;
+}
+button, input {
+  outline: none !important;
+}
+.addon .aui-group {
+  margin-top:0;
+}
+.addon .centered {
+  text-align: center;
+}
+.addon tr.script-config {
+  background-color:#f6f7f9;
+}
+.addon .relative {
+  position:relative;
+}
+.addon .collapse-config {
+  position:absolute;
+  top:-4px;
+  right:0;
+}
+.addon .toolcol {
+  width:90px;
+  min-width:90px;
+}
+.addon .script-descr {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 495px;
 }

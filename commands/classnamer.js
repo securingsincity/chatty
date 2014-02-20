@@ -6,7 +6,7 @@ module.exports = function (commander, logger) {
   commander.command({
     name: 'classname',
     help: 'Helpfully suggests class names',
-    action: function (event, response, store) {
+    action: function (event, response) {
       request.get({
         url: 'http://classnamer.com/index.txt'
       }, function (err, res, body) {

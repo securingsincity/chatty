@@ -6,7 +6,7 @@ module.exports = function (commander, logger) {
     name: 'karma',
     args: '<subject>',
     help: 'Looks up the current karma of the given subject',
-    action: function (event, response, store) {
+    action: function (event, response) {
       var match = /\b(\w+)\b/.exec(event.input);
       if (match) {
         var subject = match[1];
@@ -15,6 +15,7 @@ module.exports = function (commander, logger) {
         }
         var subjectKey = key(subject);
         var name = displayName(event, subject);
+        var store = event.tenant.store;
         store.gget(subjectKey).then(function (karma) {
           response.send(name + ' has ' + (karma || 0) + ' karma');
         }, function () {
@@ -27,7 +28,7 @@ module.exports = function (commander, logger) {
   commander.spy({
     hear: /\b(\w+)\s?(\+\+|--)(?:\s|$)/,
     help: 'Adds or removes karma',
-    action: function (event, response, store) {
+    action: function (event, response) {
       var subject = event.captures[0];
       if (ignore(subject)) return;
       var subjectKey = key(subject);
@@ -35,6 +36,7 @@ module.exports = function (commander, logger) {
       if (ignore(subject) || event.from.mention_name === subject) {
         return response.send(event.from.name + ', I am so disappointed in you!');
       }
+      var store = event.tenant.store;
       store.gget(subjectKey).then(function (karma) {
         karma = (karma || 0) + (add ? 1 : -1);
         store.gset(subjectKey, karma).then(function () {
