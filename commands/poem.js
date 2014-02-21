@@ -6,6 +6,10 @@ var _ = require('lodash');
 
 module.exports = function (commander, logger) {
 
+  commander.script({
+    help: 'A command to generate "poems" from Google Suggest'
+  });
+
   commander.command({
     name: 'poem',
     args: '[<lines>] <about>',

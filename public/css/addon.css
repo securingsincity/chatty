@@ -31,6 +31,7 @@ table.aui .right {
 }
 table.aui>thead>tr>th, table.aui>tbody>tr>th, table.aui>thead>tr>td, table.aui>tbody>tr>td, table.aui>tfoot>tr>td {
   vertical-align: middle;
+  height: 30px;
 }
 table.aui tr.enabled {
   background: transparent;

@@ -5,6 +5,10 @@ var _ = require('lodash');
 
 module.exports = function (commander, logger) {
 
+  commander.script({
+    help: 'A command for finding and displaying YouTube videos'
+  });
+
   commander.command({
     name: 'youtube',
     help: 'Finds a video matching the query term',

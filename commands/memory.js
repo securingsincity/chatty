@@ -3,6 +3,10 @@ var cliff = require('cliff');
 
 module.exports = function (commander, logger) {
 
+  commander.script({
+    help: 'A set of commands for storing and retrieving information'
+  });
+
   commander.command({
     name: 'remember',
     args: '<key> <value>',

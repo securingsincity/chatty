@@ -1,6 +1,7 @@
 module.exports = function (commander, logger) {
 
   commander.script({
+    help: 'Commands for showing help for the chatty addon',
     required: true
   });
 

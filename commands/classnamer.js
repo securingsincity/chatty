@@ -3,6 +3,10 @@ var request = require('request');
 
 module.exports = function (commander, logger) {
 
+  commander.script({
+    help: 'A command to suggest class names'
+  });
+
   commander.command({
     name: 'classname',
     help: 'Helpfully suggests class names',

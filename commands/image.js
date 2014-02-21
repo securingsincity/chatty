@@ -4,6 +4,10 @@ var request = require('request');
 
 module.exports = function (commander, logger) {
 
+  commander.script({
+    help: 'Commands for finding and displaying images'
+  });
+
   commander.command({
     name: ['img', 'image'],
     args: '<query>',

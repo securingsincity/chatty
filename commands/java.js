@@ -1,5 +1,9 @@
 module.exports = function (commander, logger) {
 
+  commander.script({
+    help: 'A command and spy for illustrating how you feel about Java'
+  });
+
   commander.command({
     name: 'java',
     help: 'Show the world how you feel about Java',

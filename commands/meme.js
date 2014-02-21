@@ -3,9 +3,13 @@ var _ = require('lodash');
 
 module.exports = function (commander, logger) {
 
+  commander.script({
+    help: 'A command for displaying random memes'
+  });
+
   commander.command({
     name: 'meme',
-    args: '[<query>]',
+    args: '[<word>]',
     help: 'Shows a meme, either randomly or using the query term',
     action: function (event, response) {
       var action = 'Instances_Select_By' + (event.input ? 'Topic' : 'Popular');

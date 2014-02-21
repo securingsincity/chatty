@@ -2,6 +2,10 @@ var roller = require('roll');
 
 module.exports = function (commander, logger) {
 
+  commander.script({
+    help: 'A command for rolling dice'
+  });
+
   commander.command({
     name: 'roll',
     help: 'Dice roller (see https://github.com/troygoode/node-roll)',

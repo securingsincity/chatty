@@ -2,16 +2,20 @@
 
 module.exports = function (commander, logger) {
 
+  commander.script({
+    help: 'Commands and spies for displaying Ferengi Rules of Acquisition'
+  });
+
   commander.command({
     name: 'ferengi',
-    help: 'Shows a Ferengi \'Rule of Acquisition\'',
+    help: 'Shows a Ferengi Rule of Acquisition',
     opts: {format: 'html'},
     action: action
   });
 
   commander.spy({
     hear: /\b(ferengi rule|money|profit|sale|discount|opportunity)\b/i,
-    help: 'Replies with a Ferengi \'Rule of Acquisition\'',
+    help: 'Replies with a Ferengi Rule of Acquisition',
     opts: {format: 'html'},
     action: action
   });

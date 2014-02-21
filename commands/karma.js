@@ -2,6 +2,10 @@ var _ = require('lodash');
 
 module.exports = function (commander, logger) {
 
+  commander.script({
+    help: 'A command and spy for managing karma'
+  });
+
   commander.command({
     name: 'karma',
     args: '<subject>',

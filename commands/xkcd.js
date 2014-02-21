@@ -5,6 +5,10 @@ var request = require('request');
 
 module.exports = function (commander, logger) {
 
+  commander.script({
+    help: 'A command for finding and displaying xkcd comics'
+  });
+
   commander.command({
     name: 'xkcd',
     args: '[latest|random|<id>]',

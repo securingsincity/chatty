@@ -4,6 +4,10 @@ var request = require('request');
 
 module.exports = function (commander, logger) {
 
+  commander.script({
+    help: 'A command to mustachify images'
+  });
+
   commander.command({
     name: 'mustache',
     args: '<url>|<query>',

@@ -4,6 +4,10 @@ var request = require('request');
 
 module.exports = function (commander, logger) {
 
+  commander.script({
+    help: 'A command get a suggested topic for conversation'
+  });
+
   commander.command({
     name: 'chat',
     help: 'Suggests a topic for conversation',

@@ -2,6 +2,10 @@
 
 module.exports = function (commander, logger) {
 
+  commander.script({
+    help: 'A command for base64 encoding or decoding strings'
+  });
+
   commander.command({
     name: 'base64',
     args: 'encode|decode <value>',
