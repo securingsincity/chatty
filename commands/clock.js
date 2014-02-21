@@ -70,7 +70,7 @@ module.exports = function (commander, logger) {
               var timezone = json.timeZoneId;
               var fullAddress = geocode.formatted_address;
               event.store.set(key(fullAddress), {address: fullAddress, timezone: timezone}).then(function () {
-                response.send('Ok, I added a clock for ' + fullAddress + ' (' + timezone + ')');
+                response.send('Ok, I added a clock for ' + fullAddress);
               });
             });
           });
@@ -91,9 +91,15 @@ module.exports = function (commander, logger) {
     opts: {format: 'html'},
     action: function (event, response) {
       event.store.all().then(function (all) {
-        var entries = _.map(all, function (v, k) {
-          return [v.address, '  ', v.timezone, '  ', moment().tz(v.timezone).format(event.variables.dateFormat)];
-        }).sort();
+        var entries = _.map(all, function (v) {
+          return [v.address, '    ', moment().tz(v.timezone)];
+        }).sort(function (a, b) {
+          var az = a[2].zone();
+          var bz = b[2].zone();
+          return az > bz ? -1 : (az < bz ? 1 : 0);
+        }).map(function (v) {
+          return [v[0], v[1], v[2].format(event.variables.dateFormat)];
+        });
         if (entries.length > 0) {
           var msg = cliff.stringifyRows(entries);
           response.send('<pre>' + msg + '</pre>');
