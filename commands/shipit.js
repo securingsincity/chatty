@@ -5,12 +5,12 @@ var _ = require('lodash');
 module.exports = function (commander, logger) {
 
   commander.script({
-    help: 'Helps motivate you to "ship it"'
+    help: 'A command and spy to display images motivating you to "ship it"'
   });
 
   commander.command({
     name: 'shipit',
-    help: 'Ship it, and ship it good!',
+    help: 'Helps motivate you to "ship it"',
     action: action
   });
 
