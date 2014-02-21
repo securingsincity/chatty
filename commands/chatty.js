@@ -10,11 +10,14 @@ module.exports = function (commander, logger) {
     help: 'Prints both commands and spies help',
     opts: {format: 'html'},
     action: function (event, response) {
-      response.send(commander.help({
+      commander.help({
+        tenant: event.tenant,
         type: 'all',
         filter: event.input,
         format: 'html'
-      }));
+      }).then(function (help) {
+        response.send(help);
+      });
     }
   });
 
@@ -24,11 +27,14 @@ module.exports = function (commander, logger) {
     help: 'Prints command help',
     opts: {format: 'html'},
     action: function (event, response) {
-      response.send(commander.help({
+      commander.help({
+        tenant: event.tenant,
         type: 'commands',
         filter: event.input,
         format: 'html'
-      }));
+      }).then(function (help) {
+        response.send(help);
+      });
     }
   });
 
@@ -38,11 +44,14 @@ module.exports = function (commander, logger) {
     help: 'Prints spies help',
     opts: {format: 'html'},
     action: function (event, response) {
-      response.send(commander.help({
-        type: 'spies',
+      commander.help({
+        tenant: event.tenant,
+        type: 'commands',
         filter: event.input,
         format: 'html'
-      }));
+      }).then(function (help) {
+        response.send(help);
+      });
     }
   });
 
