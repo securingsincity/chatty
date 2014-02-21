@@ -9,7 +9,7 @@ module.exports = function (commander, logger) {
   });
 
   commander.spy({
-    hear: /(^|\s)(?:it'?s\s+a\s+)?trap\b/i,
+    hear: /(^|\s)(?:it'?s a )?trap\b/i,
     help: 'Replies with a random Ackbar image',
     action: action
   });

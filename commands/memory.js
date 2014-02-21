@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var cliff = require('cliff');
 
-module.exports = function (commander, logger, scope) {
+module.exports = function (commander, logger) {
 
   commander.command({
     name: 'remember',
@@ -10,9 +10,9 @@ module.exports = function (commander, logger, scope) {
     action: function (event, response) {
       var match = /^([\w-]+)\s+(.+)/.exec(event.input);
       if (match) {
-        var key = scopedKey(match[1]);
+        var key = match[1];
         var value = match[2].trim();
-        event.tenant.store.set(key, value).then(function () {
+        event.store.set(key, value).then(function () {
           response.send('Ok, I will remember that');
         });
       } else {
@@ -28,8 +28,8 @@ module.exports = function (commander, logger, scope) {
     action: function (event, response) {
       var match = /^([\w-]+)/.exec(event.input);
       if (match) {
-        var key = scopedKey(match[1]);
-        event.tenant.store.get(key).then(function (value) {
+        var key = match[1];
+        event.store.get(key).then(function (value) {
           if (value) {
             response.send(value);
           } else {
@@ -49,8 +49,8 @@ module.exports = function (commander, logger, scope) {
     action: function (event, response) {
       var match = /^([\w-]+)/.exec(event.input);
       if (match) {
-        var key = scopedKey(match[1]);
-        event.tenant.store.del(key).then(function () {
+        var key = match[1];
+        event.store.del(key).then(function () {
           response.send('Ok, that has been forgotten');
         });
       } else {
@@ -66,7 +66,7 @@ module.exports = function (commander, logger, scope) {
     help: 'Recalls all remembered values',
     action: function (event, response) {
       var search = event.input;
-      event.tenant.store.all(scope).then(function (all) {
+      event.store.all().then(function (all) {
         function filter(line) {
           var esc = /[-[\]{}()*+?.,\\^$|#\s]/g;
           return search ? new RegExp('\\b' + search.replace(esc, '\\$&') + '\\b', 'i').test(line.join('    ')) : true;
@@ -90,9 +90,5 @@ module.exports = function (commander, logger, scope) {
       });
     }
   });
-
-  function scopedKey(key) {
-    return scope + ':' + key;
-  }
 
 };
