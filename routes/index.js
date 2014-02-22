@@ -1,5 +1,7 @@
 var http = require('request');
 var paths = require('path');
+var _ = require('lodash');
+var pjson = require('../package.json');
 
 module.exports = function (app, addon) {
 
@@ -14,15 +16,36 @@ module.exports = function (app, addon) {
     function(req, res) {
       // Use content-type negotiation to choose the best way to respond
       res.format({
-        // If the request content-type is text-html, it will decide which to serve up
+        // If the request accepts text-html, serve a help page
         'text/html': function () {
-          res.redirect(addon.descriptor.links.homepage);
+          // TODO: Remove the redirect and uncomment the help redirect when HC-3266 is fixed
+          res.redirect('/atlassian-connect.json');
+          // res.redirect('/help');
         },
-        // This logic is here to make sure that the `addon.json` is always
-        // served up when requested by the host
-        'application/xml': function () {
+        // If the request accepts application/json, serve the add-on descriptor
+        'application/json': function () {
           res.redirect('/atlassian-connect.json');
         }
+      });
+    }
+  );
+
+  app.get('/help',
+    function (req, res) {
+      commander.help({escapeHtml: true}).then(function (help) {
+        res.render('help', _.extend({
+          fonts: [
+            'https://fonts.googleapis.com/css?family=Russo+One'
+          ],
+          styles: [
+            '/css/help.css'
+          ],
+          scripts: [
+          ],
+          title: 'Chatty',
+          help: help,
+          version: pjson.version
+        }, req.context));
       });
     }
   );

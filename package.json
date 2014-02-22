@@ -20,6 +20,7 @@
     "jsdom": "~0.10.1",
     "trier": "~0.3.6",
     "moment": "~2.5.1",
-    "moment-timezone": "0.0.3"
+    "moment-timezone": "0.0.3",
+    "escape-html": "~1.0.1"
   }
 }

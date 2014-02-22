@@ -4,28 +4,28 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="ap-local-base-url" content="{{localBaseUrl}}">
-  <meta name="acpt" content="{{signed_request}}">
   <title>{{title}}</title>
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/css/aui.css" media="all">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/css/aui-experimental.css" media="all">
   <!--[if lt IE 9]><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/css/aui-ie.css" media="all"><![endif]-->
   <!--[if IE 9]><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/css/aui-ie9.css" media="all"><![endif]-->
+  {{#each fonts}}
+  <link href="{{this}}" rel="stylesheet" type="text/css"/>
+  {{/each}}
   {{#each styles}}
   <link href="{{furl this}}" rel="stylesheet" type="text/css"/>
   {{/each}}
 </head>
-<body class="aui-page-hybrid addon" ng-controller="MainCtrl">
-  <section id="content" role="main" class="ac-content">
+<body class="aui-page-hybrid">
+  <section id="content" role="main">
     {{{body}}}
   </section>
-  <script>var ACPT = '{{signed_request}}';</script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-resource.min.js"></script>
+  {{! <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> }}
+  {{! <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script> }}
+  {{! <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.min.js"></script> }}
+  {{! <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-resource.min.js"></script> }}
   {{! <script src="https://cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/js/aui.js"></script> }}
   {{! <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/js/aui-ie.js"></script><![endif]--> }}
-  <script src="{{hostScriptUrl}}"></script>
   {{#each scripts}}
   <script src="{{furl this}}"></script>
   {{/each}}

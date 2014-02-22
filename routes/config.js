@@ -1,10 +1,19 @@
+var _ = require('lodash');
+
 module.exports = function(app, addon, commander) {
 
   // Config page
   app.get('/config',
     addon.authenticate(),
     function (req, res) {
-      res.render('config', req.context);
+      res.render('config', _.extend({
+        styles: [
+          '/css/config.css'
+        ],
+        scripts: [
+          '/js/config.js'
+        ]
+      }, req.context));
     }
   );
 
