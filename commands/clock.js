@@ -10,7 +10,7 @@ module.exports = function (commander, logger) {
     help: 'Commands for managing and displaying world clocks',
     variables: {
       apiKey: {name: 'Google API Key', required: true},
-      dateFormat: {name: 'Date Format', value: 'ddd, h:mma'}
+      dateFormat: {name: 'Date Format', value: 'ddd, h:mma z'}
     }
   });
 
