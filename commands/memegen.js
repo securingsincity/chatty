@@ -57,12 +57,12 @@ module.exports = function (commander, logger) {
           '/memegen I don\'t always <something> but when I do <text>',
           '/memegen success when <text> then <text>',
           '/memegen <text> too damn <high>',
-          '/memegen not sure if <something> or <something else>',
+          '/memegen not sure if <something> or <something-else>',
           '/memegen yo dawg <text> so <text>',
           '/memegen all your <text> are belong to <text>',
           '/memegen one does not simply <text>',
           '/memegen if you <text> gonna have a bad time',
-          '/memegen if <text>, <word that can start a question> <text>?'
+          '/memegen if <text>, <word-that-can-start-a-question> <text>?'
         ].join('<br>'), {format: 'html'});
       }
       if (match = /^(Y U NO) (.*)/i.exec(event.input)) {
