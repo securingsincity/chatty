@@ -9,7 +9,7 @@ module.exports = function (commander, logger) {
   commander.command({
     name: 'karma',
     args: '<subject>',
-    help: 'Looks up the current karma for the named subject',
+    help: 'Looks up the subject\'s current karma',
     action: function (event, response) {
       if (!event.input) {
         return response.send('A subject is required when looking up karma');

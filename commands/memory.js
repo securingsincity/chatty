@@ -28,7 +28,7 @@ module.exports = function (commander, logger) {
   commander.command({
     name: 'recall',
     args: '<key>',
-    help: 'Recalls a value for a given key, if recognized',
+    help: 'Recalls a value for a given key',
     action: function (event, response) {
       var match = /^([\w-]+)/.exec(event.input);
       if (match) {
@@ -49,7 +49,7 @@ module.exports = function (commander, logger) {
   commander.command({
     name: 'forget',
     args: '<key>',
-    help: 'Forgets a value for a given key, if recognized',
+    help: 'Forgets a value for a given key',
     action: function (event, response) {
       var match = /^([\w-]+)/.exec(event.input);
       if (match) {

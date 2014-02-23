@@ -3,18 +3,18 @@
 module.exports = function (commander, logger) {
 
   commander.script({
-    help: 'Commands and spies for displaying an "alot"'
+    help: 'A spy for displaying an "alot"'
   });
 
-  commander.command({
-    name: 'alot',
-    help: 'Shows a random image of an "alot"',
-    action: action
-  });
+  // commander.command({
+  //   name: 'alot',
+  //   help: 'Shows a random image of an "alot"',
+  //   action: action
+  // });
 
   commander.spy({
     hear: /(^|\s)alot\b/i,
-    help: 'Replies with a random image of an "alot"',
+    help: 'Replies with a random "alot" image',
     action: action
   });
 

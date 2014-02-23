@@ -7,14 +7,14 @@ var _ = require('lodash');
 module.exports = function (commander, logger) {
 
   commander.script({
-    help: 'A command to generate "poems" from Google Suggest'
+    help: 'A command to create "poems" from the collective yearning of humanity'
   });
 
   commander.command({
     name: 'poem',
     args: '[<lines>] <about>',
     opts: {format: 'html'},
-    help: 'Tell a poem from the collective yearning of humanity',
+    help: 'Creates a "poem" from a Google search',
     action: function (event, response) {
       var match = /(?:(\d)\s+)?(.+)/.exec(event.input);
       if (match) {

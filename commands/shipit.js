@@ -5,18 +5,18 @@ var _ = require('lodash');
 module.exports = function (commander, logger) {
 
   commander.script({
-    help: 'A command and spy to display images motivating you to "ship it"'
+    help: 'A spy to display images motivating you to "ship it"'
   });
 
-  commander.command({
-    name: 'shipit',
-    help: 'Helps motivate you to "ship it"',
-    action: action
-  });
+  // commander.command({
+  //   name: 'shipit',
+  //   help: 'Helps motivate you to "ship it"',
+  //   action: action
+  // });
 
   commander.spy({
     hear: /\bship\s?it\b/,
-    help: 'Replies with an inspiring image',
+    help: 'Replies with motivation to ship it',
     action: action
   });
 

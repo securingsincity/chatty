@@ -9,61 +9,29 @@ module.exports = function (commander, logger) {
     help: 'A command for generating memes'
   });
 
-  function generate(response, url, text1, text2) {
-    text1 = (text1 || '').trim();
-    text2 = (text2 || '').trim();
-    request.get({
-      url: 'http://memecaptain.com/g',
-      json: true,
-      qs: {
-        u: url,
-        t1: text1,
-        t2: text2
-      }
-    }, function (err, res, json) {
-      if (err) {
-        logger.error(err.stack || err);
-        return response.send('I don\'t feel like doing that right now');
-      }
-      if (res.statusCode === 301) {
-        return generate(response, res.headers.location, text1, text2);
-      }
-      if (res.statusCode > 301){
-        return response.send('Meme Capatain doesn\'t feel like doing that right now');
-      }
-      if (json && json.imageUrl) {
-        return response.send(json.imageUrl);
-      } else {
-        return response.send('Sorry, I couldn\'t generate that meme');
-      }
-    });
-  };
-
   commander.command({
-    name: ['memegen', 'mgen'],
-    args: 'help',
+    name: ['mgen', 'memegen'],
+    args: '[help]',
     help: 'Generates memes with memecaptain.com',
     action: function (event, response) {
-      if (!event.input) {
-        return response.send('I need more information; try "/memegen help"');
-      }
       var match;
-      if (match = /^help\b/.exec(event.input)) {
-        return response.send([
-          '/memegen y u no <text>',
-          '/memegen aliens guy <text>',
-          '/memegen brace yourself <text>',
-          '/memegen <text> all the <things>',
-          '/memegen I don\'t always <something> but when I do <text>',
-          '/memegen success when <text> then <text>',
-          '/memegen <text> too damn <high>',
-          '/memegen not sure if <something> or <something-else>',
-          '/memegen yo dawg <text> so <text>',
-          '/memegen all your <text> are belong to <text>',
-          '/memegen one does not simply <text>',
-          '/memegen if you <text> gonna have a bad time',
-          '/memegen if <text>, <word-that-can-start-a-question> <text>?'
-        ].join('<br>'), {format: 'html'});
+      if (!event.input || (match = /^help\b/.exec(event.input))) {
+        return response.send('<pre>' + [
+          'Usage:',
+          '  /memegen y u no <text>',
+          '  /memegen aliens guy <text>',
+          '  /memegen brace yourself <text>',
+          '  /memegen <text> all the <things>',
+          '  /memegen I don\'t always <something> but when I do <text>',
+          '  /memegen success when <text> then <text>',
+          '  /memegen <text> too damn <high>',
+          '  /memegen not sure if <something> or <something-else>',
+          '  /memegen yo dawg <text> so <text>',
+          '  /memegen all your <text> are belong to <text>',
+          '  /memegen one does not simply <text>',
+          '  /memegen if you <text> gonna have a bad time',
+          '  /memegen if <text>, <word-that-can-start-a-question> <text>?'
+        ].join('<br>') + '</pre>', {format: 'html'});
       }
       if (match = /^(Y U NO) (.*)/i.exec(event.input)) {
         return generate(response, 'http://memecaptain.com/y_u_no.jpg', match[1], match[2]);
@@ -110,5 +78,35 @@ module.exports = function (commander, logger) {
       return response.send('Sorry, I didn\'t understand that');
     }
   });
+
+  function generate(response, url, text1, text2) {
+    text1 = (text1 || '').trim();
+    text2 = (text2 || '').trim();
+    request.get({
+      url: 'http://memecaptain.com/g',
+      json: true,
+      qs: {
+        u: url,
+        t1: text1,
+        t2: text2
+      }
+    }, function (err, res, json) {
+      if (err) {
+        logger.error(err.stack || err);
+        return response.send('I don\'t feel like doing that right now');
+      }
+      if (res.statusCode === 301) {
+        return generate(response, res.headers.location, text1, text2);
+      }
+      if (res.statusCode > 301){
+        return response.send('Meme Capatain doesn\'t feel like doing that right now');
+      }
+      if (json && json.imageUrl) {
+        return response.send(json.imageUrl);
+      } else {
+        return response.send('Sorry, I couldn\'t generate that meme');
+      }
+    });
+  }
 
 };

@@ -11,7 +11,7 @@ module.exports = function (commander, logger) {
   commander.command({
     name: ['img', 'image'],
     args: '<query>',
-    help: 'Finds an image matching the query term',
+    help: 'Searches for an image',
     action: function (event, response) {
       google({query: event.input}, response.send);
     }
@@ -20,7 +20,7 @@ module.exports = function (commander, logger) {
   commander.command({
     name: ['anim', 'animated'],
     args: '<query>',
-    help: 'Finds an animation matching the query term',
+    help: 'Searches for an animated image',
     action: function (event, response) {
       google({query: event.input, animated: true}, response.send);
     }
@@ -29,7 +29,7 @@ module.exports = function (commander, logger) {
   commander.command({
     name: ['face'],
     args: '<query>',
-    help: 'Finds a face matching the query term',
+    help: 'Searches for an image of a face',
     action: function (event, response) {
       google({query: event.input, face: true}, response.send);
     }
@@ -37,7 +37,7 @@ module.exports = function (commander, logger) {
 
   commander.command({
     name: ['facepalm'],
-    help: 'Finds a random facepalm image',
+    help: 'Displays a random facepalm image',
     action: function (event, response) {
       google({query: 'facepalm', face: true}, response.send);
     }

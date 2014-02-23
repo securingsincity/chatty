@@ -11,7 +11,7 @@ module.exports = function (commander, logger) {
   commander.command({
     name: 'mustache',
     args: '<url>|<query>',
-    help: 'Mustachifies an image url or image found with the query term',
+    help: 'Mustachify an image url or search result',
     action: function (event, response) {
       var type = Math.floor(Math.random() * 6);
       if (/^https?:\/\/.*?\.(png|jpg|jpeg|gif)$/i.test(event.input)) {

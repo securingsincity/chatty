@@ -90,7 +90,7 @@ module.exports = function (commander, logger) {
 
   commander.command({
     name: 'clocks',
-    help: 'Displays the current time for all known clocks',
+    help: 'Displays the time for all known clocks',
     opts: {format: 'html'},
     action: function (event, response) {
       event.store.all().then(function (all) {

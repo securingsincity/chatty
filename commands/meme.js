@@ -10,7 +10,7 @@ module.exports = function (commander, logger) {
   commander.command({
     name: 'meme',
     args: '[<word>]',
-    help: 'Shows a meme, either randomly or using the search word',
+    help: 'Shows a meme randomly or by search word',
     action: function (event, response) {
       var action = 'Instances_Select_By' + (event.input ? 'Topic' : 'Popular');
       var q = {pageIndex: 0, pageSize: 10};

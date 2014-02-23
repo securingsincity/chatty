@@ -8,16 +8,20 @@ var cliff = require('cliff');
 module.exports = function (commander, logger) {
 
   commander.script({
-    help: 'A command for fetching snow reports'
+    help: 'A command for generating snow reports'
   });
 
   commander.command({
     name: 'snow',
-    args: 'in <state>|at <resort>, <state>',
-    help: 'Fetches a snow report for a state or a specific resort and state',
+    args: '[help]',
+    help: 'Generates snow reports',
     action: function (event, response) {
-      if (!event.input) {
-        return response.send('I need more information to give you a snow report');
+      if (!event.input || event.input === 'help') {
+        return response.send('<pre>' + [
+          'Usage:',
+          '  /snow in <state>',
+          '  /snow at <resort>, <state>'
+        ].join('<br>') + '</pre>', {format: 'html'});
       }
       var match = /^(?:(?:(in)\s+(\w+))|(?:(at)\s+([^,]+)\s*,\s+(\w+)))\b/.exec(event.input);
       if (!match) {
