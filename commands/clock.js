@@ -10,7 +10,7 @@ module.exports = function (commander, logger) {
     help: 'Commands for managing and displaying world clocks',
     variables: {
       apiKey: {name: 'Google API Key', required: true},
-      dateFormat: {name: 'Date Format', value: 'ddd, h:mm:ss a'}
+      dateFormat: {name: 'Date Format', value: 'ddd, h:mma'}
     }
   });
 
@@ -95,13 +95,13 @@ module.exports = function (commander, logger) {
     action: function (event, response) {
       event.store.all().then(function (all) {
         var entries = _.map(all, function (v) {
-          return [v.address, '    ', moment().tz(v.timezone)];
+          return [moment().tz(v.timezone), ' ', v.address];
         }).sort(function (a, b) {
-          var az = a[2].zone();
-          var bz = b[2].zone();
+          var az = a[0].zone();
+          var bz = b[0].zone();
           return az > bz ? -1 : (az < bz ? 1 : 0);
         }).map(function (v) {
-          return [v[0], v[1], v[2].format(event.variables.dateFormat)];
+          return [v[0].format(event.variables.dateFormat), v[1], v[2]];
         });
         if (entries.length > 0) {
           var msg = cliff.stringifyRows(entries);
