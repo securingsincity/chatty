@@ -17,7 +17,7 @@ module.exports = function (commander, logger) {
   commander.command({
     name: 'clock',
     args: 'add|remove <address>',
-    help: 'Adds or removes a clock by address or timezone',
+    help: 'Adds or removes a clock by address',
     opts: {format: 'html'},
     action: function (event, response) {
       var match = /(add|remove)\s+(.+)/.exec(event.input);
