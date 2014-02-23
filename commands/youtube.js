@@ -11,6 +11,7 @@ module.exports = function (commander, logger) {
 
   commander.command({
     name: 'youtube',
+    args: '<query>',
     help: 'Finds a video matching the query term',
     action: function (event, response) {
       request.get({
