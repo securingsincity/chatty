@@ -16,12 +16,11 @@ module.exports = function (commander, logger) {
     args: '[help]',
     help: 'Generates snow reports',
     action: function (event, response) {
-      if (!event.input || event.input === 'help') {
-        return response.send('<pre>' + [
-          'Usage:',
-          '  /snow in <state>',
-          '  /snow at <resort>, <state>'
-        ].join('<br>') + '</pre>', {format: 'html'});
+      if (!event.input || /^help\b/i.test(event.input)) {
+        return response.help('snow', [
+          'in <state>',
+          'at <resort>, <state>'
+        ]);
       }
       var match = /^(?:(?:(in)\s+(\w+))|(?:(at)\s+([^,]+)\s*,\s+(\w+)))\b/.exec(event.input);
       if (!match) {

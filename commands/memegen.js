@@ -15,23 +15,22 @@ module.exports = function (commander, logger) {
     help: 'Generates memes with memecaptain.com',
     action: function (event, response) {
       var match;
-      if (!event.input || (match = /^help\b/.exec(event.input))) {
-        return response.send('<pre>' + [
-          'Usage:',
-          '  /memegen y u no <text>',
-          '  /memegen aliens guy <text>',
-          '  /memegen brace yourself <text>',
-          '  /memegen <text> all the <things>',
-          '  /memegen I don\'t always <something> but when I do <text>',
-          '  /memegen success when <text> then <text>',
-          '  /memegen <text> too damn <high>',
-          '  /memegen not sure if <something> or <something-else>',
-          '  /memegen yo dawg <text> so <text>',
-          '  /memegen all your <text> are belong to <text>',
-          '  /memegen one does not simply <text>',
-          '  /memegen if you <text> gonna have a bad time',
-          '  /memegen if <text>, <word-that-can-start-a-question> <text>?'
-        ].join('<br>') + '</pre>', {format: 'html'});
+      if (!event.input || (match = /^help\b/i.exec(event.input))) {
+        return response.help('memegen', [
+          'y u no <text>',
+          'aliens guy <text>',
+          'brace yourself <text>',
+          '<text> all the <things>',
+          'I don\'t always <something> but when I do <text>',
+          'success when <text> then <text>',
+          '<text> too damn <high>',
+          'not sure if <something> or <something-else>',
+          'yo dawg <text> so <text>',
+          'all your <text> are belong to <text>',
+          'one does not simply <text>',
+          'if you <text> gonna have a bad time',
+          'if <text>, <word-that-can-start-a-question> <text>?'
+        ]);
       }
       if (match = /^(Y U NO) (.*)/i.exec(event.input)) {
         return generate(response, 'http://memecaptain.com/y_u_no.jpg', match[1], match[2]);
