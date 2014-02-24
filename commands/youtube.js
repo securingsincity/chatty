@@ -12,7 +12,7 @@ module.exports = function (commander, logger) {
   commander.command({
     name: 'youtube',
     args: '<query>',
-    help: 'Finds a video matching the query term',
+    help: 'Searches for a video',
     action: function (event, response) {
       request.get({
         url: 'http://gdata.youtube.com/feeds/api/videos',
