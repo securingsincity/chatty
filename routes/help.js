@@ -17,7 +17,8 @@ module.exports = function(app, addon, commander) {
           ],
           title: 'Chatty',
           help: help,
-          version: pjson.version
+          version: pjson.version,
+          localBaseUrl: addon.config.localBaseUrl()
         }, req.context));
       });
     }
