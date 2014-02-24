@@ -14,7 +14,7 @@ module.exports = function (commander, logger) {
     name: 'poem',
     args: '[<lines>] <about>',
     opts: {format: 'html'},
-    help: 'Creates a "poem" from a Google search',
+    help: 'Creates a "poem" from Google Suggest',
     action: function (event, response) {
       var match = /(?:(\d)\s+)?(.+)/.exec(event.input);
       if (match) {
