@@ -22,14 +22,22 @@ module.exports = function (commander, logger) {
           'brace yourself <text>',
           '<text> all the <things>',
           'I don\'t always <something> but when I do <text>',
-          'success when <text> then <text>',
           '<text> too damn <high>',
           'not sure if <something> or <something-else>',
           'yo dawg <text> so <text>',
           'all your <text> are belong to <text>',
           'one does not simply <text>',
           'if you <text> gonna have a bad time',
-          'if <text>, <word-that-can-start-a-question> <text>?'
+          'if <text>, <word-that-can-start-a-question> <text>?',
+          '<word-that-can-start-a-question> the hell <text>',
+          'success when <text> then <text>',
+          'fwp when <text> then <text>',
+          'bad luck when <text> then <text>',
+          'scumbag <text> then <text>',
+          'what if i told you <text>',
+          'i hate <text>',
+          '<text> so i got that going for me',
+          '<img-url> | <top-text> | <bottom-text>'
         ]);
       }
       if (match = /^(Y U NO) (.*)/i.exec(event.input)) {
@@ -38,17 +46,14 @@ module.exports = function (commander, logger) {
       if (match = /^aliens guy (.+)/i.exec(event.input)) {
         return generate(response, 'http://memecaptain.com/aliens.jpg', '', match[1]);
       }
-      if (match = /^(brace yourself) (.+)/i.exec(event.input)) {
+      if (match = /^((?:prepare|brace) (?:yourself|yourselves)) (.+)/i.exec(event.input)) {
         return generate(response, 'http://i.imgur.com/cOnPlV7.jpg', match[1], match[2]);
       }
       if (match = /^(.*) (all the .*)/i.exec(event.input)) {
         return generate(response, 'http://memecaptain.com/all_the_things.jpg', match[1], match[2]);
       }
-      if (match = /^(i don'?t always .*) (but when i do,? .*)/i.exec(event.input)) {
+      if (match = /^(i don'?t (?:always|normally) .*) (but when i do,? .*)/i.exec(event.input)) {
         return generate(response, 'http://memecaptain.com/most_interesting.jpg', match[1], match[2]);
-      }
-      if (match = /^success when (.*) then (.*)/i.exec(event.input)) {
-        return generate(response, 'http://memecaptain.com/success_kid.jpg', match[1], match[2]);
       }
       if (match = /^(.*) (\w+\stoo damn .*)/i.exec(event.input)) {
         return generate(response, 'http://memecaptain.com/too_damn_high.jpg', match[1], match[2]);
@@ -71,9 +76,37 @@ module.exports = function (commander, logger) {
       if (match = /^(if .*), ((?:are|can|do|does|how|is|may|might|should|then|what|when|where|which|who|why|will|won't|would) .*)/i.exec(event.input)) {
         return generate(response, 'http://memecaptain.com/philosoraptor.jpg', match[1], match[2]);
       }
-      // if (match = /^/i.exec(event.input)) {
-      //   return generate(response, '', match[1], match[2]);
-      // }
+      if (match = /^((?:how|what|when|where|who|why) the (?:hell|fuck|shit|crap)) (.*)/i.exec(event.input)) {
+        return generate(response, 'http://memecaptain.com/src_images/z8IPtw', match[1], match[2]);
+      }
+      if (match = /^(?:success|nailed it) when (.*) then (.*)/i.exec(event.input)) {
+        return generate(response, 'http://memecaptain.com/success_kid.jpg', match[1], match[2]);
+      }
+      if (match = /^(?:fwp|cry) when (.*) then (.*)/i.exec(event.input)) {
+        return generate(response, 'http://v1.memecaptain.com/first_world_problems.jpg', match[1], match[2]);
+      }
+      if (match = /^bad luck when (.*) then (.*)/i.exec(event.input)) {
+        return generate(response, 'http://v1.memecaptain.com/bad_luck_brian.jpg', match[1], match[2]);
+      }
+      if (match = /^scumbag(?: steve) (.*) then (.*)/i.exec(event.input)) {
+        return generate(response, 'http://v1.memecaptain.com/scumbag_steve.jpg', match[1], match[2]);
+      }
+      if (match = /^(what if i told you) (.+)/i.exec(event.input)) {
+        return generate(response, 'http://memecaptain.com/src_images/fWle1w', match[1], match[2]);
+      }
+      if (match = /^(i hate) (.+)/i.exec(event.input)) {
+        return generate(response, 'http://memecaptain.com/src_images/_k6JVg', match[1], match[2]);
+      }
+      if (match = /^(.+),? (so i got that going for me(?:,? which is nice)?)/i.exec(event.input)) {
+        var text2 = match[2];
+        if (!/\bwhich is nice$/.test(text2)) {
+          text2 += ', which is nice'
+        }
+        return generate(response, 'http://memecaptain.com/src_images/h9ct5g', match[1], text2);
+      }
+      if (match = /^(https?:\/\/[^|\s]+\.(?:jpg|jpeg|gif|png)[^|\s]*)\s*\|\s*([^|]*)\s*\|\s*([^|]*)/i.exec(event.input)) {
+        return generate(response, match[1], match[2], match[3]);
+      }
       return response.send('Sorry, I didn\'t understand that');
     }
   });
@@ -98,7 +131,7 @@ module.exports = function (commander, logger) {
         return generate(response, res.headers.location, text1, text2);
       }
       if (res.statusCode > 301){
-        return response.send('Meme Capatain doesn\'t feel like doing that right now');
+        return response.send('Meme Captain doesn\'t feel like doing that right now');
       }
       if (json && json.imageUrl) {
         return response.send(json.imageUrl);
