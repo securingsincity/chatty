@@ -6,14 +6,8 @@ module.exports = function (commander, logger) {
     help: 'A spy for showing random images of Admiral Ackbar'
   });
 
-  // commander.command({
-  //   name: ['ackbar'],
-  //   help: 'Shows a random Ackbar image',
-  //   action: action
-  // });
-
   commander.spy({
-    hear: /(^|\s)(?:it'?s a )?trap\b/i,
+    hear: /(^|\s)it'?s a trap\b/i,
     help: 'Replies with a random Ackbar image',
     action: action
   });
