@@ -13,7 +13,7 @@ module.exports = function (commander, logger) {
         action: getTopPostFromSubreddit
     });
 
-    var postFormat = _.template("<%= url %><br><b><%= title %></b>")
+    var postFormat = _.template("<b><%= title %></b> <%= url %>")
 
     function getTopPostFromSubreddit(event, response) {
         var sub = event.captures[0];
