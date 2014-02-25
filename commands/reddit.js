@@ -19,9 +19,9 @@ module.exports = function (commander, logger) {
         var sub = event.captures[0];
         redwrap.r(sub, function(err, data, resp) {
             if (err) return logger.error(err.stack || err);
-            if (data.data.length) {
-                var firstPost = data.data[0];
-                response.send(postFormat(firstPost));
+            var posts = (data.data && data.data.children && data.data.children.length) ? data.data.children : [];
+            if (posts.length) {
+                response.send(postFormat(posts[0].data));
             } else {
                 response.send("No posts in this subreddit. (sadpanda)");
             }
