@@ -20,16 +20,6 @@ module.exports = function (commander, logger) {
           'commands [<filter>] -- lists commands available in this room',
           'spies    [<filter>] -- lists spies active in this room'
         ]);
-        // response.send(
-        //   '<pre>' +
-        //   'See <a href="' + helpUrl + '">all commands and spies</a>\n' +
-        //   'Usage:<br>' +
-        //   cliff.stringifyRows([
-        //     [' ', '/chatty commands', ' ', '[<filter>]', ' ', 'lists commands available in this room'],
-        //     [' ', '/chatty spies',    ' ', '[<filter>]', ' ', 'lists spies active in this room']
-        //   ]) +
-        //   '</pre>'
-        // );
       } else if (match = /^commands\s*(.*)/i.exec(event.input)) {
         commander.help({
           tenant: event.tenant,

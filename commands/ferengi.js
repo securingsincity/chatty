@@ -6,13 +6,6 @@ module.exports = function (commander, logger) {
     help: 'A spy for replying with Ferengi Rules of Acquisition'
   });
 
-  // commander.command({
-  //   name: 'ferengi',
-  //   help: 'Shows a Ferengi Rule of Acquisition',
-  //   opts: {format: 'html'},
-  //   action: action
-  // });
-
   commander.spy({
     hear: /\b(money|profit|sale|discount|opportunity)\b/i,
     help: 'Replies with a Ferengi Rule of Acquisition',
