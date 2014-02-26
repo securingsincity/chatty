@@ -6,37 +6,52 @@ module.exports = function (commander, logger) {
     var postTemplate = _.template("<b><%= title %></b> <%= url %>");
     var allowNSFW = false;
 
+    var matchers = {
+        "/^r\/(top|hot|rising|controversial)?$/": postFromAll,
+        "/^r\/([\w\-]+)\/?(top|hot|rising|controversial)?$/": postsFromSubReddit
+    };
+
     commander.script({
         help: 'Call up all sorts of reddit schenanigans'
     });
 
     commander.spy({
-        hear: /^r\/(top|hot|rising|controversial)?$/,
-        help: 'Lists the top post from a subreddit',
+        hear: /^r\/(.*?)$/,
+        help: 'Does reddity stuff',
         action: function(event, response) {
-            doRedditRequest({
-                sub: "all",
-                sort: event.captures.length ? event.captures[0] : ""
-            }, renderPosts(1, function(content) {
-                response.send(content);
-            }));
+            _.pairs(matchers, function(pair) {
+                var reg = new RegExp(pair[0]);
+                var callback = pair[1];
+                var match = reg.exec(event.input);
+                if (match) {
+                    if (!event.isPrevented) {
+                        callback(match.slice(1), event, response);
+                    }
+                }
+            });
         }
     });
 
-    commander.spy({
-        hear: /^r\/([\w\-]+)\/?(top|hot|rising|controversial)?$/,
-        help: 'Lists the top post from a subreddit',
-        action: function(event, response) {
-            var sub = (event.captures.length) ? event.captures[0] : "all";
-            var sort = (event.captures.length > 1) ? event.captures[1] : "";
-            doRedditRequest({
-                sub: sub,
-                sort: sort
-            }, renderPosts(1, function(content) {
-                response.send(content);
-            }));
-        }
-    });
+    function postFromAll(match, event, response) {
+        event.isPrevented = true;
+        doRedditRequest({
+            sub: "all",
+            sort: match.length ? match[0] : ""
+        }, renderPosts(1, function(content) {
+            response.send(content);
+        }));
+    }
+
+    function postsFromSubReddit(match, event, response) {
+        var sub = (match.length) ? match[0] : "all";
+        var sort = (match.length > 1) ? match[1] : "";
+        doRedditRequest({
+            sub: sub,
+            sort: sort
+        }, renderPosts(1, function(content) {
+            response.send(content);
+        }));
+    }
 
     function renderPosts(count, callback) {
         return function(err, posts) {
