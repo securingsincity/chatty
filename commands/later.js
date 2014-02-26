@@ -138,7 +138,6 @@ module.exports = function (commander, logger) {
       store.all().then(function (all) {
         _.keys(all, function (id) {
           stopJob(tenant, response, id);
-          store.del('job-' + id);
         });
       });
     });
