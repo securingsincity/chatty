@@ -122,6 +122,7 @@ module.exports = function (commander, logger) {
                     while (i < count) {
                         console.log(fresh[i]);
                         html.push(postTemplate(fresh[i].data));
+                        event.store.set(fresh[i].data.name, 1);
                         i++;
                     }
                     callback(html.join("<hr>"));
@@ -202,13 +203,9 @@ module.exports = function (commander, logger) {
             _.each(posts, function(post) {
                 event.store.get(post.data.name).then(function (value) {
                     if (!value) {
-                        console.log("found fresh", post);
                         fresh.push(post);
-                        event.store.set(post.data.name, 1);
                     }
-                    console.log(count, posts.length);
                     if (++count === posts.length) {
-                        console.log("calling back", fresh.length);
                         callback(fresh);
                     }
                 });
