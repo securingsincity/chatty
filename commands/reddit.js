@@ -7,8 +7,8 @@ module.exports = function (commander, logger) {
     var allowNSFW = false;
 
     var matchers = {
-        "/^r\/(top|hot|rising|controversial)?$/": postFromAll,
-        "/^r\/([\w\-]+)\/?(top|hot|rising|controversial)?$/": postsFromSubReddit
+        "^r\\/(top|hot|rising|controversial)?$": postFromAll,
+        "^r\\/([\\w\\-]+)\\/?(top|hot|rising|controversial)?$": postsFromSubReddit
     };
 
     commander.script({
