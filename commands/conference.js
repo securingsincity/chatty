@@ -17,13 +17,14 @@ module.exports = function (commander, logger) {
 
   commander.command({
     name: 'conference',
-    args: '[help]|[start]|[call in <phonenumber>]',
+    args: '[help]',
     opts: {format: 'html'},
     help: 'Create and manage voice conference calls',
     action: function (event, response) {
       var match;
       if (match = /^help\b/i.exec(event.input)) {
         response.help('conference', [
+          '',
           'start',
           'call in <phonenumber>',
         ]);
