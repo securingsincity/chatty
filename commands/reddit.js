@@ -32,7 +32,7 @@ module.exports = function (commander, logger) {
 
     commander.command({
         name: "r",
-        args: "help\nr/subreddit[/filter][/duration]\nwatch r/subreddit[/filter][/duration] [minimumScore]",
+        args: "help|r/subreddit[</filter>][</duration>]|watch r/subreddit[</filter>][</duration>] [<minimumScore>]",
         help: "Displays the top post from reddit /r/[subreddit][/filter][/duration] i.e. /r/gifs/top/month",
         action: onCommandMessage
     });
@@ -42,8 +42,8 @@ module.exports = function (commander, logger) {
         var match;
         if (!event.input || /^help\b/i.test(event.input)) {
             return response.help('r', [
-                'r/<subreddit>/<filter>/<duration>',
-                'r/<subreddit>/<filter>/<duration> watch <minimumSCore>'
+                'r/<subreddit></filter></duration>',
+                'r/<subreddit></filter></duration> watch <minimumSCore>'
             ]);
         } else if (match = watchMatcher.exec(event.input)) {
             var matches = match.slice(1);
