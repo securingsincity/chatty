@@ -4,7 +4,6 @@ var request = require('request');
 module.exports = function (commander, logger) {
 
     var postTemplate = _.template("<%= title %> <%= url %>");
-    var allowNSFW = false;
 
     var matchers = {
         "^r\\/(new|rising)?$": postFromAll,
@@ -14,7 +13,10 @@ module.exports = function (commander, logger) {
     };
 
     commander.script({
-        help: 'Call up all sorts of reddit schenanigans'
+        help: 'Call up all sorts of reddit schenanigans',
+        variables: {
+            nsfwEnabled: {name: 'Enable adult themed (NSFW) content? (Yes/No)', value: "No"}
+        }
     });
 
     commander.spy({
@@ -58,8 +60,8 @@ module.exports = function (commander, logger) {
 
                 var html = [];
 
-                if (!allowNSFW) {
-                    posts = _.filter(posts, function(post) {
+                if (event.variables.nsfwEnabled.toLowerCase() !== "yes") {
+                    posts = _.filter(posts, function (post) {
                         return !post.data.over_18;
                     });
                 }
