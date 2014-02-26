@@ -3,7 +3,7 @@ var request = require('request');
 
 module.exports = function (commander, logger) {
 
-    var postTemplate = _.template("<b><%= title %></b> <%= url %>");
+    var postTemplate = _.template("<%= title %> <%= url %>");
     var allowNSFW = false;
 
     var matchers = {
@@ -17,9 +17,6 @@ module.exports = function (commander, logger) {
     });
 
     commander.spy({
-        opts: {
-            format: 'html'
-        },
         hear: /^r\/(.*?)$/,
         help: 'Does reddity stuff',
         action: onRedditMessage
