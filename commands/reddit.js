@@ -116,10 +116,15 @@ module.exports = function (commander, logger) {
                     });
                 }
 
-                for (var i = 0; i < count; i++) {
-                    if (i < posts.length) {
-                        html.push(postTemplate(posts[i].data))
+                var i = 0;
+                var j = 0;
+                while (j < count && i < posts.length) {
+                    if (isFreshArticles(event, posts[i], callback)) {
+                        expireArticle(event, post[i]);
+                        j++;
+                        callback(html.push(postTemplate(posts[i].data)));
                     }
+                    i++;
                 }
 
                 callback(html.join("<hr>"));
@@ -189,5 +194,31 @@ module.exports = function (commander, logger) {
         }
 
         return url;
+    }
+
+    function expireArticle(event, post) {
+        if (noRepeats == true) {
+            event.store.set(post.data.name);
+        }
+    }
+
+    function isFreshArticles(event, posts, callback) {
+        if (noRepeats == true) {
+            var count = 0;
+            var fresh = [];
+            _.each(posts, function(post) {
+                event.store.get(post.data.name).then(function (value) {
+                    if (value) {
+                        fresh.push(post);
+                    }
+
+                    if (++count === posts.length) {
+                        callback(fresh);
+                    }
+                });
+            });
+        } else {
+            callback(posts);
+        }
     }
 };
