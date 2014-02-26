@@ -17,7 +17,9 @@ module.exports = function (commander, logger) {
             doRedditRequest({
                 sub: "all",
                 sort: event.captures.length ? event.captures[0] : ""
-            }, renderPosts(response, 1));
+            }, renderPosts(1, function(content) {
+                response.send(content);
+            }));
         }
     });
 
@@ -30,11 +32,13 @@ module.exports = function (commander, logger) {
             doRedditRequest({
                 sub: sub,
                 sort: sort
-            }, renderPosts(response, 1));
+            }, renderPosts(1, function(content) {
+                response.send(content);
+            }));
         }
     });
 
-    function renderPosts(response, count) {
+    function renderPosts(count, callback) {
         return function(err, posts) {
             if (err) return logger.error(err.stack || err);
             if (posts.length) {
@@ -43,7 +47,7 @@ module.exports = function (commander, logger) {
 
                 if (!allowNSFW) {
                     posts = _.filter(posts, function(post) {
-                        return post.over_18;
+                        return !post.data.over_18;
                     });
                 }
 
@@ -53,9 +57,9 @@ module.exports = function (commander, logger) {
                     }
                 }
 
-                response.send(html.join("<hr>"));
+                callback(html.join("<hr>"));
             } else {
-                response.send("No posts in this subreddit. (sadpanda)");
+                callback("No posts in this subreddit. (sadpanda)");
             }
         }
     }
