@@ -32,7 +32,7 @@ module.exports = function (commander, logger) {
 
     commander.command({
         name: "r",
-        args: "help\nr/subreddit[/filter][/duration]\nwatch r/subreddit[/filter][/duration] [minimumUpvotes]",
+        args: "help\nr/subreddit[/filter][/duration]\nwatch r/subreddit[/filter][/duration] [minimumScore]",
         help: "Displays the top post from reddit /r/[subreddit][/filter][/duration] i.e. /r/gifs/top/month",
         action: onCommandMessage
     });
@@ -43,7 +43,7 @@ module.exports = function (commander, logger) {
         if (!event.input || /^help\b/i.test(event.input)) {
             return response.help('r', [
                 'r/<subreddit>/<filter>/<duration>',
-                'r/<subreddit>/<filter>/<duration> watch <minimumUpvote>'
+                'r/<subreddit>/<filter>/<duration> watch <minimumSCore>'
             ]);
         } else if (match = watchMatcher.exec(event.input)) {
             var matches = match.slice(1);
@@ -110,9 +110,9 @@ module.exports = function (commander, logger) {
                     return !post.data.stickied;
                 });
 
-                if (params.minUpvote) {
+                if (params.minScore) {
                     posts = _.filter(posts, function(post) {
-                        return post.data.ups >= params.minUpvote;
+                        return post.data.score >= params.minScore;
                     });
                 }
 
@@ -165,10 +165,10 @@ module.exports = function (commander, logger) {
         }
 
         if (matches[3] != undefined) {
-            var minUpvote = parseInt(matches[3]);
+            var minScore = parseInt(matches[3]);
 
-            if (!isNaN(minUpvote)) {
-                params.minUpvote = minUpvote;
+            if (!isNaN(minScore)) {
+                params.minScore = minScore;
             }
         }
 
