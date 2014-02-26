@@ -7,8 +7,8 @@ module.exports = function (commander, logger) {
     var allowNSFW = false;
 
     var matchers = {
-        "^r\\/(top|hot|rising|controversial)?$": postFromAll,
-        "^r\\/([\\w\\-]+)\\/?(top|hot|rising|controversial)?$": postsFromSubReddit
+        "^r\\/(top|hot|rising|controversial)?\\/?(hour|day|week|month|year|all)?$": postFromAll,
+        "^r\\/([\\w\\-]+)\\/?(top|hot|rising|controversial)?\\/?(hour|day|week|month|year|all)?$": postsFromSubReddit
     };
 
     commander.script({
@@ -16,43 +16,40 @@ module.exports = function (commander, logger) {
     });
 
     commander.spy({
+        opts: {
+            format: 'html'
+        },
         hear: /^r\/(.*?)$/,
         help: 'Does reddity stuff',
-        action: doPost
+        action: onRedditMessage
     });
 
-    function doPost(event, response) {
+    function onRedditMessage(event, response) {
         _.each(_.pairs(matchers), function(pair) {
             var reg = new RegExp(pair[0]);
             var callback = pair[1];
             var match = reg.exec(event.message);
             if (match) {
                 if (!event.isPrevented) {
-                    callback(match.slice(1), event, response);
+                    var matches = match.slice(1);
+                    callback(matches, event, function(content) {
+                        response.send(content);
+                    });
                 }
             }
         });
     }
 
-    function postFromAll(match, event, response) {
+    function postFromAll(matches, event, callback) {
         event.isPrevented = true;
-        doRedditRequest({
-            sub: "all",
-            sort: match.length ? match[0] : ""
-        }, renderPosts(1, function(content) {
-            response.send(content);
-        }));
+        matches.unshift("all");
+        var params = getParamsForMatches(matches);
+        doRedditRequest(params, renderPosts(1, callback));
     }
 
-    function postsFromSubReddit(match, event, response) {
-        var sub = (match.length) ? match[0] : "all";
-        var sort = (match.length > 1) ? match[1] : "";
-        doRedditRequest({
-            sub: sub,
-            sort: sort
-        }, renderPosts(1, function(content) {
-            response.send(content);
-        }));
+    function postsFromSubReddit(matches, event, callback) {
+        var params = getParamsForMatches(matches);
+        doRedditRequest(params, renderPosts(1, callback));
     }
 
     function renderPosts(count, callback) {
@@ -95,6 +92,26 @@ module.exports = function (commander, logger) {
         });
     }
 
+    function getParamsForMatches(matches) {
+        var params = {
+            sub: "all"
+        };
+
+        if (matches[0] != undefined) {
+            params.sub = matches[0];
+        }
+
+        if (matches.length >= 1 && matches[1] != undefined) {
+            params.sort = matches[1];
+        }
+
+        if (matches.length >= 2 && matches[2] != undefined) {
+            params.duration = matches[2];
+        }
+
+        return params;
+    }
+
     function getRedditUrlForParams(params) {
         var url = "http://www.reddit.com/";
 
@@ -107,6 +124,10 @@ module.exports = function (commander, logger) {
         }
 
         url += "/.json";
+
+        if (params.duration) {
+            url += "?t=" + params.duration;
+        }
 
         return url;
     }
