@@ -33,7 +33,7 @@ module.exports = function (commander, logger) {
     function isFreshArticle(event, key) {
         if (noRepeats == false) {
             var hash = crypto.createHash('md5').update(key).digest('hex');
-            event.store.get("r/"+key).then(function (value) {
+            event.store.get("r/"+key).then(function (value)) {
                 if (value) {
                     return false;
                 }
@@ -92,7 +92,7 @@ module.exports = function (commander, logger) {
 
                 var i = 0;
                 var j = 0;
-                while (count > 1 and j < count and i < posts.length) {
+                while (count > 1 && j < count && i < posts.length) {
                     if (isFreshArticle(posts[i].data)) {
                         html.push(postTemplate(posts[i].data));
                         expireArticle(posts[i].data)
