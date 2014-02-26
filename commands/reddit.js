@@ -19,7 +19,7 @@ module.exports = function (commander, logger) {
 
     commander.spy({
         hear: /^r\/(.*?)$/,
-        help: 'Does reddity stuff',
+        help: 'Does reddity stuff r/[subreddit][/filter][/duration] i.e. r/gifs/top/month',
         action: onRedditMessage
     });
 
