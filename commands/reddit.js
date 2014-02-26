@@ -64,6 +64,10 @@ module.exports = function (commander, logger) {
                     });
                 }
 
+                posts = _.filter(posts, function(post) {
+                    return !post.data.stickied;
+                });
+
                 for (var i = 0; i < count; i++) {
                     if (i < posts.length) {
                         html.push(postTemplate(posts[i].data))
