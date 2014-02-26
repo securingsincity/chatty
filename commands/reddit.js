@@ -22,6 +22,7 @@ module.exports = function (commander, logger) {
     });
 
     function doPost(event, response) {
+        console.log("event", event)
         _.each(_.pairs(matchers), function(pair) {
             console.log(pair)
             var reg = new RegExp(pair[0]);
