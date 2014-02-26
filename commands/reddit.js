@@ -6,6 +6,7 @@ module.exports = function (commander, logger) {
 
     var postTemplate = _.template("<%= title %> <%= url %>");
     var allowNSFW = false;
+    var noRepeats = false;
 
     var matchers = {
         "^r\\/(top|hot|rising|controversial)?\\/?(hour|day|week|month|year|all)?$": postFromAll,
