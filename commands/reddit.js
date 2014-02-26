@@ -65,7 +65,8 @@ module.exports = function (commander, logger) {
     function hipchatTest(match, event, response) {
         var msg = 'john <strong>test</strong>';
         response.send(msg);
-        response.random([ 'https://s3.amazonaws.com/uploads.hipchat.com/10804/132391/qOJSVtvBWOLoorv/java.jpg' ]);
+        response.send('https://s3.amazonaws.com/uploads.hipchat.com/10804/132391/qOJSVtvBWOLoorv/java.jpg');
+ //       response.random([ 'https://s3.amazonaws.com/uploads.hipchat.com/10804/132391/qOJSVtvBWOLoorv/java.jpg' ]);
     }
 
     function renderPosts(count, callback) {
