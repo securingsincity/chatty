@@ -27,7 +27,7 @@ module.exports = function (commander, logger) {
             var reg = new RegExp(pair[0]);
             var callback = pair[1];
             var match = reg.exec(event.input);
-            console.log(reg, match);
+            console.log({input: event.input, reg: reg, match: match});
             if (match) {
                 if (!event.isPrevented) {
                     callback(match.slice(1), event, response);
