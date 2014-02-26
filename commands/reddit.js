@@ -45,15 +45,15 @@ module.exports = function (commander, logger) {
         event.isPrevented = true;
         matches.unshift("all");
         var params = getParamsForMatches(matches);
-        doRedditRequest(params, renderPosts(1, callback));
+        doRedditRequest(params, renderPosts(event, 1, callback));
     }
 
     function postsFromSubReddit(matches, event, callback) {
         var params = getParamsForMatches(matches);
-        doRedditRequest(params, renderPosts(1, callback));
+        doRedditRequest(params, renderPosts(event, 1, callback));
     }
 
-    function renderPosts(count, callback) {
+    function renderPosts(event, count, callback) {
         return function(err, posts) {
             if (err) return logger.error(err.stack || err);
             if (posts.length) {
