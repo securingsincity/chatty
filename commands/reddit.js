@@ -19,8 +19,11 @@ module.exports = function (commander, logger) {
     commander.spy({
         hear: /^r\/(.*?)$/,
         help: 'Does reddity stuff',
+        opts: {format: 'html'},
         action: doPost
     });
+  
+   
 
     function doPost(event, response) {
         console.log("event", event)
