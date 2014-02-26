@@ -23,6 +23,7 @@
     "moment-timezone": "0.0.3",
     "escape-html": "~1.0.1",
     "xml2js": "~0.4.1",
-    "later": "~1.1.6"
+    "later": "~1.1.6",
+    "phone": "0.0.6"
   }
 }
