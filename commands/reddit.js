@@ -28,7 +28,7 @@ module.exports = function (commander, logger) {
     commander.command({
         name: "r",
         args: "",
-        help: "",
+        help: "Displays the top post from reddit /r/[subreddit][/filter][/duration] i.e. /r/gifs/top/month",
         action: onRedditMessage
     });
 
