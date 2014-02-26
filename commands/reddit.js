@@ -145,4 +145,19 @@ module.exports = function (commander, logger) {
 
         return url;
     }
+
+    function expireArticle(event, post) {
+        if (noRepeats == true) {
+            event.store.set(post.data.name);
+        }
+    }
+
+    function isFreshArticle(event, post, callback) {
+        if (noRepeats == false) {
+            event.store.get(post.data.name).then(function (value) {
+                callback(!!value);
+            });
+        }
+        callback(true);
+    }
 };
