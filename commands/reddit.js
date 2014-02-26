@@ -18,19 +18,23 @@ module.exports = function (commander, logger) {
     commander.spy({
         hear: /^r\/(.*?)$/,
         help: 'Does reddity stuff',
-        action: function(event, response) {
-            _.pairs(matchers, function(pair) {
-                var reg = new RegExp(pair[0]);
-                var callback = pair[1];
-                var match = reg.exec(event.input);
-                if (match) {
-                    if (!event.isPrevented) {
-                        callback(match.slice(1), event, response);
-                    }
-                }
-            });
-        }
+        action: doPost
     });
+
+    function doPost(event, response) {
+        _.each(_.pairs(matchers), function(pair) {
+            console.log(pair)
+            var reg = new RegExp(pair[0]);
+            var callback = pair[1];
+            console.log(reg);
+            var match = reg.exec(event.input);
+            if (match) {
+                if (!event.isPrevented) {
+                    callback(match.slice(1), event, response);
+                }
+            }
+        });
+    }
 
     function postFromAll(match, event, response) {
         event.isPrevented = true;
