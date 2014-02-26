@@ -30,7 +30,7 @@ module.exports = function (commander, logger) {
 
     commander.command({
         name: "r",
-        args: "help\nr/subreddit[/filter][/duration]\nwatch r/subreddit[/filter][/duration] minimumUpvotes (default 1000)",
+        args: "help\nr/subreddit[/filter][/duration]\nwatch r/subreddit[/filter][/duration] [minimumUpvotes]",
         help: "Displays the top post from reddit /r/[subreddit][/filter][/duration] i.e. /r/gifs/top/month",
         action: onCommandMessage
     });
@@ -38,7 +38,12 @@ module.exports = function (commander, logger) {
     function onCommandMessage(event, response) {
 
         var match;
-        if (match = watchMatcher.exec(event.input)) {
+        if (!event.input || /^help\b/i.test(event.input)) {
+            return response.help('r', [
+                'r/<subreddit>/<filter>/<duration>',
+                'r/<subreddit>/<filter>/<duration> watch <minimumUpvote>'
+            ]);
+        } else if (match = watchMatcher.exec(event.input)) {
             var matches = match.slice(1);
             postsFromSubReddit(matches, event, function(content) {
                 response.send(content);
@@ -157,10 +162,10 @@ module.exports = function (commander, logger) {
 
         if (matches[3] != undefined) {
             var minUpvote = parseInt(matches[3]);
-            if (isNaN(minUpvote)) {
-                minUpvote = 1000;
+
+            if (!isNaN(minUpvote)) {
+                params.minUpvote = minUpvote;
             }
-            params.minUpvote = minUpvote;
         }
 
         return params;
