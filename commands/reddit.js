@@ -33,11 +33,11 @@ module.exports = function (commander, logger) {
     function isFreshArticle(event, key) {
         if (noRepeats == false) {
             var hash = crypto.createHash('md5').update(key).digest('hex');
-            event.store.get("r/"+key).then(function (value)) {
+            event.store.get("r/"+key).then(function (value) {
                 if (value) {
                     return false;
                 }
-            }
+            });
         }
         return true;
     }
