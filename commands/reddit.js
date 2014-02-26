@@ -4,6 +4,7 @@ var request = require('request');
 module.exports = function (commander, logger) {
 
     var postTemplate = _.template("<b><%= title %></b> <%= url %>");
+    var allowNSFW = false;
 
     commander.script({
         help: 'Call up all sorts of reddit schenanigans'
@@ -39,6 +40,13 @@ module.exports = function (commander, logger) {
             if (posts.length) {
 
                 var html = [];
+
+                if (!allowNSFW) {
+                    posts = _.filter(posts, function(post) {
+                        return post.over_18;
+                    });
+                }
+
                 for (var i = 0; i < count; i++) {
                     if (i < posts.length) {
                         html.push(postTemplate(posts[i].data))
