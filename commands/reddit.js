@@ -6,7 +6,7 @@ module.exports = function (commander, logger) {
 
     var postTemplate = _.template("<%= title %> <%= url %>");
 
-    var watchMatcher = /^watch\s([\w\-]+\/?(top|hot|controversial)?\/?(hour|day|week|month|year|all)?\s?([0-9]+)$)/;
+    var watchMatcher = /^watch\sr\/([\w\-]+)\/?(top|hot|controversial)?\/?(hour|day|week|month|year|all)?\s?([0-9]*)$/;
 
     var matchers = {
         "(new|rising)$": postFromAll,
@@ -40,7 +40,6 @@ module.exports = function (commander, logger) {
         var match;
         if (match = watchMatcher.exec(event.input)) {
             var matches = match.slice(1);
-            console.log(matches, event.input);
             postsFromSubReddit(matches, event, function(content) {
                 response.send(content);
             })
