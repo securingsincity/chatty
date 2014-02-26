@@ -120,7 +120,6 @@ module.exports = function (commander, logger) {
                     var i = 0;
                     var html = [];
                     while (i < count && i < fresh.length) {
-                        console.log(fresh[i]);
                         html.push(postTemplate(fresh[i].data));
                         i++;
                     }
