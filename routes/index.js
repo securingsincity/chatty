@@ -36,7 +36,7 @@ module.exports = function (app, addon) {
   addon.on('installed', function (clientKey, clientInfo, req) {
     var data = req.body;
     commander.onInstalled(clientInfo).then(function () {
-      addon.logger.info('Tenant installed:', clientInfo);
+      addon.logger.info('Tenant installed:', JSON.stringify(clientInfo));
       hipchat.sendMessage(clientInfo, req.body.roomId, 'The ' + addon.descriptor.name + ' add-on has been installed in this room');
     });
   });
@@ -53,7 +53,7 @@ module.exports = function (app, addon) {
               addon.settings.client.del(k);
             });
           });
-          addon.logger.info('Tenant uninstalled:', clientInfo);
+          addon.logger.info('Tenant uninstalled:', JSON.stringify(clientInfo));
         });
       }
     });

@@ -2,6 +2,7 @@ var _ = require('lodash');
 var later = require('later');
 var RSVP = require('rsvp');
 var cliff = require('cliff');
+var crypto = require('crypto');
 
 module.exports = function (commander, logger) {
 
@@ -51,7 +52,9 @@ module.exports = function (commander, logger) {
           }, schedule);
           resolve(job.handle);
         } else {
-          reject(new Error('Invalid schedule spec "' + job.spec + '"'));
+          var err = new Error('Invalid schedule: "' + job.spec + '"');
+          err.column = schedule.error;
+          reject(err);
         }
       } catch (e) {
         reject(e);
@@ -69,12 +72,12 @@ module.exports = function (commander, logger) {
       } else {
         reject();
       }
-      resolve();
     });
   }
 
   function add(event, response, spec, command) {
-    var id = require('crypto').createHash('sha1').update(new Date() + '|' + spec + '|' + command).digest('hex').slice(0, 8);
+    var seed = new Date() + '|' + spec + '|' + command;
+    var id = crypto.createHash('sha1').update(seed).digest('hex').slice(0, 8);
     var job = {
       id: id,
       spec: spec,
@@ -82,8 +85,12 @@ module.exports = function (commander, logger) {
       from: event.from
     };
     function fail(err) {
-      logger.error(err.stack || err);
-      response.confused();
+      if (err.column) {
+        response.send('Sorry, I didn\'t understand the schedule "' + spec + '"; error at character ' + err.column);
+      } else {
+        logger.error(err);
+        response.confused();
+      }
     }
     startJob(event.tenant, response, job).then(function () {
       return event.store.set('job-' + job.id, job).then(function () {
@@ -95,14 +102,16 @@ module.exports = function (commander, logger) {
 
   function cancel(event, response, id) {
     function fail(err) {
-      logger.error(err.stack || err);
       response.confused();
     }
-    return stopJob(event.tenant, response, id).then(function () {
-      return event.store.del('job-' + id).then(function () {
-        response.send('Ok, I canceled that command');
+    if (jobs[id]) {
+      return stopJob(event.tenant, response, id).then(function () {
+        return event.store.del('job-' + id).then(function () {
+          response.send('Ok, I canceled that command');
+        }, fail);
       }, fail);
-    }, fail);
+    }
+    return RSVP.all([]);
   }
 
   function show(event, response) {
@@ -136,8 +145,8 @@ module.exports = function (commander, logger) {
   function stop(tenant, store, response) {
     commander.work(function () {
       store.all().then(function (all) {
-        _.keys(all, function (id) {
-          stopJob(tenant, response, id);
+        _.each(all, function (job) {
+          stopJob(tenant, response, job.id);
         });
       });
     });
