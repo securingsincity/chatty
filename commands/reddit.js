@@ -1,12 +1,10 @@
 var _ = require('lodash');
-var crypto = require('crypto');
 var request = require('request');
 
 module.exports = function (commander, logger) {
 
     var postTemplate = _.template("<%= title %> <%= url %>");
     var allowNSFW = false;
-    var noRepeats = false;
 
     var matchers = {
         "^r\\/(top|hot|rising|controversial)?\\/?(hour|day|week|month|year|all)?$": postFromAll,
@@ -23,25 +21,8 @@ module.exports = function (commander, logger) {
         help: 'Does reddity stuff',
         action: onRedditMessage
     });
-
-    function expireArticle(event, key) {
-        if (noRepeats == true) {
-            var hash = crypto.createHash('md5').update(key).digest('hex');
-            event.store.set("r/"+key);
-        }
-    }
-
-    function isFreshArticle(event, key) {
-        if (noRepeats == false) {
-            var hash = crypto.createHash('md5').update(key).digest('hex');
-            event.store.get("r/"+key).then(function (value) {
-                if (value) {
-                    return false;
-                }
-            });
-        }
-        return true;
-    }
+  
+   
 
     function onRedditMessage(event, response) {
         _.each(_.pairs(matchers), function(pair) {
@@ -91,15 +72,10 @@ module.exports = function (commander, logger) {
                     });
                 }
 
-                var i = 0;
-                var j = 0;
-                while (count > 1 && j < count && i < posts.length) {
-                    if (isFreshArticle(posts[i].data)) {
-                        html.push(postTemplate(posts[i].data));
-                        expireArticle(posts[i].data)
-                        j++;
+                for (var i = 0; i < count; i++) {
+                    if (i < posts.length) {
+                        html.push(postTemplate(posts[i].data))
                     }
-                    i++;
                 }
 
                 callback(html.join("<hr>"));
