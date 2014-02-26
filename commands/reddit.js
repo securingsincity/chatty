@@ -1,6 +1,5 @@
 var _ = require('lodash');
 var request = require('request');
-var util = require('util');
 
 module.exports = function (commander, logger) {
 
@@ -47,7 +46,7 @@ module.exports = function (commander, logger) {
             ]);
         } else if (match = watchMatcher.exec(event.input)) {
             var matches = match.slice(1);
-            postsFromSubReddit(matches, event, function(content) {
+            postsFromSubReddit(matches, event, true, function(content) {
                 response.send(content);
             })
         } else {
@@ -58,7 +57,7 @@ module.exports = function (commander, logger) {
                 if (match) {
                     if (!event.isPrevented) {
                         var matches = match.slice(1);
-                        callback(matches, event, function(content) {
+                        callback(matches, event, false, function(content) {
                             response.send(content);
                         });
                     }
@@ -75,7 +74,7 @@ module.exports = function (commander, logger) {
             if (match) {
                 if (!event.isPrevented) {
                     var matches = match.slice(1);
-                    callback(matches, event, function(content) {
+                    callback(matches, event, false, function(content) {
                         response.send(content);
                     });
                 }
@@ -83,15 +82,17 @@ module.exports = function (commander, logger) {
         });
     }
 
-    function postFromAll(matches, event, callback) {
+    function postFromAll(matches, event, isWatch, callback) {
         event.isPrevented = true;
         matches.unshift("all");
         var params = getParamsForMatches(matches);
+        params.isWatch = isWatch;
         doRedditRequest(params, renderPosts(params, event, 1, callback));
     }
 
-    function postsFromSubReddit(matches, event, callback) {
+    function postsFromSubReddit(matches, event, isWatch, callback) {
         var params = getParamsForMatches(matches);
+        params.isWatch = isWatch;
         doRedditRequest(params, renderPosts(params, event, 1, callback));
     }
 
@@ -121,7 +122,9 @@ module.exports = function (commander, logger) {
                     var html = [];
                     while (i < count && i < fresh.length) {
                         html.push(postTemplate(fresh[i].data));
-                        event.store.set(fresh[i].data.name, 1);
+                        if (noRepeats && params.isWatch) {
+                            event.store.set(fresh[i].data.name, 1);
+                        }
                         i++;
                     }
                     callback(html.join("<hr>"));
