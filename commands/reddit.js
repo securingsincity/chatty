@@ -7,10 +7,10 @@ module.exports = function (commander, logger) {
     var postTemplate = _.template("<%= title %> <%= url %>");
 
     var matchers = {
-        "^\\/?r\\/(new|rising)?$": postFromAll,
-        "^\\/?r\\/(top|hot|controversial)?\\/?(hour|day|week|month|year|all)?$": postFromAll,
-        "^\\/?r\\/([\\w\\-]+)\\/?(new|rising)?$": postsFromSubReddit,
-        "^\\/?r\\/([\\w\\-]+)\\/(top|hot|controversial)?\\/?(hour|day|week|month|year|all)?$": postsFromSubReddit
+        "(new|rising)$": postFromAll,
+        "(top|hot|controversial)?\\/?(hour|day|week|month|year|all)?$": postFromAll,
+        "([\\w\\-]+)\\/?(new|rising)?$": postsFromSubReddit,
+        "([\\w\\-]+)\\/(top|hot|controversial)?\\/?(hour|day|week|month|year|all)?$": postsFromSubReddit
     };
 
     commander.script({
@@ -23,21 +23,36 @@ module.exports = function (commander, logger) {
     commander.spy({
         hear: /^r\/(.*?)$/,
         help: 'Displays the top post from reddit r/[subreddit][/filter][/duration] i.e. r/gifs/top/month',
-        action: onRedditMessage
+        action: onSpyMessage
     });
 
     commander.command({
         name: "r",
         args: "",
         help: "Displays the top post from reddit /r/[subreddit][/filter][/duration] i.e. /r/gifs/top/month",
-        action: onRedditMessage
+        action: onCommandMessage
     });
 
-    function onRedditMessage(event, response) {
+    function onCommandMessage(event, response) {
         _.each(_.pairs(matchers), function(pair) {
-            var reg = new RegExp(pair[0]);
+            var reg = new RegExp("^" + pair[0]);
             var callback = pair[1];
-            console.log(util.inspect(event));
+            var match = reg.exec(event.input);
+            if (match) {
+                if (!event.isPrevented) {
+                    var matches = match.slice(1);
+                    callback(matches, event, function(content) {
+                        response.send(content);
+                    });
+                }
+            }
+        });
+    }
+
+    function onSpyMessage(event, response) {
+        _.each(_.pairs(matchers), function(pair) {
+            var reg = new RegExp("^r\\/" + pair[0]);
+            var callback = pair[1];
             var match = reg.exec(event.message);
             if (match) {
                 if (!event.isPrevented) {
