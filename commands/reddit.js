@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var request = require('request');
+var util = require('util');
 
 module.exports = function (commander, logger) {
 
@@ -36,7 +37,7 @@ module.exports = function (commander, logger) {
         _.each(_.pairs(matchers), function(pair) {
             var reg = new RegExp(pair[0]);
             var callback = pair[1];
-            console.log(utils.inspect(event));
+            console.log(util.inspect(event));
             var match = reg.exec(event.message);
             if (match) {
                 if (!event.isPrevented) {
