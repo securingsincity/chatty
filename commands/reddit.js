@@ -119,8 +119,7 @@ module.exports = function (commander, logger) {
                 areFresh(event, posts, function(fresh) {
                     var i = 0;
                     var html = [];
-                    while (i < count) {
-                        console.log(fresh[i]);
+                    while (i < count && i < fresh.length) {
                         html.push(postTemplate(fresh[i].data));
                         event.store.set(fresh[i].data.name, 1);
                         i++;
