@@ -8,7 +8,8 @@ module.exports = function (commander, logger) {
 
     var matchers = {
         "^r\\/(top|hot|rising|controversial)?\\/?(hour|day|week|month|year|all)?$": postFromAll,
-        "^r\\/([\\w\\-]+)\\/?(top|hot|rising|controversial)?\\/?(hour|day|week|month|year|all)?$": postsFromSubReddit
+        "^r\\/([\\w\\-]+)\\/?(top|hot|rising|controversial)?\\/?(hour|day|week|month|year|all)?$": postsFromSubReddit,
+        "^r\\/(hipchattest)?$": hipchatTest
     };
 
     commander.script({
@@ -23,6 +24,8 @@ module.exports = function (commander, logger) {
         help: 'Does reddity stuff',
         action: onRedditMessage
     });
+  
+   
 
     function onRedditMessage(event, response) {
         _.each(_.pairs(matchers), function(pair) {
@@ -50,6 +53,13 @@ module.exports = function (commander, logger) {
     function postsFromSubReddit(matches, event, callback) {
         var params = getParamsForMatches(matches);
         doRedditRequest(params, renderPosts(1, callback));
+    }
+
+    function hipchatTest(match, event, response) {
+        var msg = 'john <strong>test</strong>';
+        response.send(msg);
+        response.send('https://s3.amazonaws.com/uploads.hipchat.com/10804/132391/qOJSVtvBWOLoorv/java.jpg');
+ //       response.random([ 'https://s3.amazonaws.com/uploads.hipchat.com/10804/132391/qOJSVtvBWOLoorv/java.jpg' ]);
     }
 
     function renderPosts(count, callback) {
