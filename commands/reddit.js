@@ -40,6 +40,7 @@ module.exports = function (commander, logger) {
         var match;
         if (match = watchMatcher.exec(event.input)) {
             var matches = match.slice(1);
+            console.log(matches, event.input);
             postsFromSubReddit(matches, event, function(content) {
                 response.send(content);
             })
