@@ -6,6 +6,8 @@ module.exports = function (commander, logger) {
 
     var postTemplate = _.template("<%= title %> <%= url %>");
 
+    var watchMatcher = /^watch\s([\w\-]+\/?(top|hot|controversial)?\/?(hour|day|week|month|year|all)?\s?([0-9]+)$)/;
+
     var matchers = {
         "(new|rising)$": postFromAll,
         "(top|hot|controversial)?\\/?(hour|day|week|month|year|all)?$": postFromAll,
@@ -34,19 +36,28 @@ module.exports = function (commander, logger) {
     });
 
     function onCommandMessage(event, response) {
-        _.each(_.pairs(matchers), function(pair) {
-            var reg = new RegExp("^" + pair[0]);
-            var callback = pair[1];
-            var match = reg.exec(event.input);
-            if (match) {
-                if (!event.isPrevented) {
-                    var matches = match.slice(1);
-                    callback(matches, event, function(content) {
-                        response.send(content);
-                    });
+
+        var match;
+        if (match = watchMatcher.exec(event.input)) {
+            var matches = match.slice(1);
+            postsFromSubReddit(matches, event, function(content) {
+                response.send(content);
+            })
+        } else {
+            _.each(_.pairs(matchers), function(pair) {
+                var reg = new RegExp("^" + pair[0]);
+                var callback = pair[1];
+                var match = reg.exec(event.input);
+                if (match) {
+                    if (!event.isPrevented) {
+                        var matches = match.slice(1);
+                        callback(matches, event, function(content) {
+                            response.send(content);
+                        });
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     function onSpyMessage(event, response) {
@@ -69,15 +80,15 @@ module.exports = function (commander, logger) {
         event.isPrevented = true;
         matches.unshift("all");
         var params = getParamsForMatches(matches);
-        doRedditRequest(params, renderPosts(event, 1, callback));
+        doRedditRequest(params, renderPosts(params, event, 1, callback));
     }
 
     function postsFromSubReddit(matches, event, callback) {
         var params = getParamsForMatches(matches);
-        doRedditRequest(params, renderPosts(event, 1, callback));
+        doRedditRequest(params, renderPosts(params, event, 1, callback));
     }
 
-    function renderPosts(event, count, callback) {
+    function renderPosts(params, event, count, callback) {
         return function(err, posts) {
             if (err) return logger.error(err.stack || err);
             if (posts.length) {
@@ -93,6 +104,12 @@ module.exports = function (commander, logger) {
                 posts = _.filter(posts, function(post) {
                     return !post.data.stickied;
                 });
+
+                if (params.minUpvote) {
+                    posts = _.filter(posts, function(post) {
+                        return post.data.ups >= params.minUpvote;
+                    });
+                }
 
                 for (var i = 0; i < count; i++) {
                     if (i < posts.length) {
@@ -130,12 +147,16 @@ module.exports = function (commander, logger) {
             params.sub = matches[0];
         }
 
-        if (matches.length >= 1 && matches[1] != undefined) {
+        if (matches[1] != undefined) {
             params.sort = matches[1];
         }
 
-        if (matches.length >= 2 && matches[2] != undefined) {
+        if (matches[2] != undefined) {
             params.duration = matches[2];
+        }
+
+        if (matches[3] != undefined) {
+            params.minUpvote = parseInt(matches[3]);
         }
 
         return params;
