@@ -22,13 +22,10 @@ module.exports = function (commander, logger) {
     });
 
     function doPost(event, response) {
-        console.log("event", event)
         _.each(_.pairs(matchers), function(pair) {
-            console.log(pair)
             var reg = new RegExp(pair[0]);
             var callback = pair[1];
             var match = reg.exec(event.message);
-            console.log({input: event.message, reg: reg, match: match});
             if (match) {
                 if (!event.isPrevented) {
                     callback(match.slice(1), event, response);
