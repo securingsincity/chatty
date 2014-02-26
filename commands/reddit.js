@@ -8,7 +8,8 @@ module.exports = function (commander, logger) {
 
     var matchers = {
         "^r\\/(top|hot|rising|controversial)?$": postFromAll,
-        "^r\\/([\\w\\-]+)\\/?(top|hot|rising|controversial)?$": postsFromSubReddit
+        "^r\\/([\\w\\-]+)\\/?(top|hot|rising|controversial)?$": postsFromSubReddit,
+        "^r\\/(hipchattest)?$": hipchatTest
     };
 
     commander.script({
@@ -56,6 +57,12 @@ module.exports = function (commander, logger) {
         }, renderPosts(1, function(content) {
             response.send(content);
         }));
+    }
+
+    function hipchatTest(match, event, response) {
+        response.random([
+            'https://s3.amazonaws.com/uploads.hipchat.com/10804/132391/qOJSVtvBWOLoorv/java.jpg'
+        ]);
     }
 
     function renderPosts(count, callback) {
