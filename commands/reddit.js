@@ -8,6 +8,8 @@ module.exports = function (commander, logger) {
 
     var watchMatcher = /^watch\sr\/([\w\-]+)\/?(top|hot|controversial)?\/?(hour|day|week|month|year|all)?\s?([0-9]*)$/;
 
+    var noRepeats = true;
+
     var matchers = {
         "(new|rising)$": postFromAll,
         "(top|hot|controversial)?\\/?(hour|day|week|month|year|all)?$": postFromAll,
@@ -93,8 +95,6 @@ module.exports = function (commander, logger) {
             if (err) return logger.error(err.stack || err);
             if (posts.length) {
 
-                var html = [];
-
                 if (event.variables.nsfwEnabled.toLowerCase() !== "yes") {
                     posts = _.filter(posts, function (post) {
                         return !post.data.over_18;
@@ -111,18 +111,16 @@ module.exports = function (commander, logger) {
                     });
                 }
 
-                var i = 0;
-                var j = 0;
-                while (j < count && i < posts.length) {
-                    if (isFreshArticles(event, posts[i], callback)) {
-                        expireArticle(event, post[i]);
-                        j++;
-                        callback(html.push(postTemplate(posts[i].data)));
+                areFresh(event, posts, function(fresh) {
+                    var i = 0;
+                    var html = [];
+                    while (i < count) {
+                        html.push(postTemplate(fresh[i].data));
+                        i++;
                     }
-                    i++;
-                }
+                    callback(html.join("<hr>"));
+                });
 
-                callback(html.join("<hr>"));
             } else {
                 callback("No posts in this subreddit. (sadpanda)");
             }
@@ -187,20 +185,15 @@ module.exports = function (commander, logger) {
         return url;
     }
 
-    function expireArticle(event, post) {
-        if (noRepeats == true) {
-            event.store.set(post.data.name);
-        }
-    }
-
-    function isFreshArticles(event, posts, callback) {
+    function areFresh(event, posts, callback) {
         if (noRepeats == true) {
             var count = 0;
             var fresh = [];
             _.each(posts, function(post) {
                 event.store.get(post.data.name).then(function (value) {
-                    if (value) {
+                    if (!value) {
                         fresh.push(post);
+                        event.store.set(post.data.name);
                     }
 
                     if (++count === posts.length) {
