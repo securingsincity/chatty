@@ -202,7 +202,7 @@ module.exports = function (commander, logger) {
                 event.store.get(post.data.name).then(function (value) {
                     if (!value) {
                         fresh.push(post);
-                        event.store.set(post.data.name);
+                        event.store.set(post.data.name, 1);
                     }
 
                     if (++count === posts.length) {
