@@ -199,7 +199,6 @@ module.exports = function (commander, logger) {
         if (noRepeats == true) {
             var count = 0;
             var fresh = [];
-            console.log(posts);
             _.each(posts, function(post) {
                 event.store.get(post.data.name).then(function (value) {
                     if (!value) {
@@ -207,9 +206,9 @@ module.exports = function (commander, logger) {
                         fresh.push(post);
                         event.store.set(post.data.name, 1);
                     }
-
+                    console.log(count, posts.length);
                     if (++count === posts.length) {
-                        console.log("calling back", fresh);
+                        console.log("calling back", fresh.length);
                         callback(fresh);
                     }
                 });
