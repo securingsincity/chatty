@@ -30,7 +30,7 @@ module.exports = function (commander, logger) {
 
     commander.command({
         name: "r",
-        args: "",
+        args: "help\nr/subreddit[/filter][/duration]\nwatch r/subreddit[/filter][/duration] minimumUpvotes (default 1000)",
         help: "Displays the top post from reddit /r/[subreddit][/filter][/duration] i.e. /r/gifs/top/month",
         action: onCommandMessage
     });
@@ -156,7 +156,11 @@ module.exports = function (commander, logger) {
         }
 
         if (matches[3] != undefined) {
-            params.minUpvote = parseInt(matches[3]);
+            var minUpvote = parseInt(matches[3]);
+            if (isNaN(minUpvote)) {
+                minUpvote = 1000;
+            }
+            params.minUpvote = minUpvote;
         }
 
         return params;
