@@ -6,14 +6,14 @@ module.exports = function (commander, logger) {
     var postTemplate = _.template("<%= title %> <%= url %>");
 
     var matchers = {
-        "^r\\/(new|rising)?$": postFromAll,
-        "^r\\/(top|hot|controversial)?\\/?(hour|day|week|month|year|all)?$": postFromAll,
-        "^r\\/([\\w\\-]+)\\/?(new|rising)?$": postsFromSubReddit,
-        "^r\\/([\\w\\-]+)\\/(top|hot|controversial)?\\/?(hour|day|week|month|year|all)?$": postsFromSubReddit
+        "^\\/?r\\/(new|rising)?$": postFromAll,
+        "^\\/?r\\/(top|hot|controversial)?\\/?(hour|day|week|month|year|all)?$": postFromAll,
+        "^\\/?r\\/([\\w\\-]+)\\/?(new|rising)?$": postsFromSubReddit,
+        "^\\/?r\\/([\\w\\-]+)\\/(top|hot|controversial)?\\/?(hour|day|week|month|year|all)?$": postsFromSubReddit
     };
 
     commander.script({
-        help: 'Call up all sorts of reddit schenanigans',
+        help: 'Call up all sorts of reddit shenanigans',
         variables: {
             nsfwEnabled: {name: 'Enable adult themed (NSFW) content? (Yes/No)', value: "No"}
         }
@@ -21,7 +21,14 @@ module.exports = function (commander, logger) {
 
     commander.spy({
         hear: /^r\/(.*?)$/,
-        help: 'Does reddity stuff r/[subreddit][/filter][/duration] i.e. r/gifs/top/month',
+        help: 'Displays the top post from reddit r/[subreddit][/filter][/duration] i.e. r/gifs/top/month',
+        action: onRedditMessage
+    });
+
+    commander.command({
+        name: "r",
+        args: "",
+        help: "",
         action: onRedditMessage
     });
 
