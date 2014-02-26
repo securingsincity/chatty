@@ -7,8 +7,10 @@ module.exports = function (commander, logger) {
     var allowNSFW = false;
 
     var matchers = {
-        "^r\\/(top|hot|rising|controversial)?\\/?(hour|day|week|month|year|all)?$": postFromAll,
-        "^r\\/([\\w\\-]+)\\/?(top|hot|rising|controversial)?\\/?(hour|day|week|month|year|all)?$": postsFromSubReddit
+        "^r\\/(new|rising)?$": postFromAll,
+        "^r\\/(top|hot|controversial)?\\/?(hour|day|week|month|year|all)?$": postFromAll,
+        "^r\\/([\\w\\-]+)\\/?(new|rising)?$": postsFromSubReddit,
+        "^r\\/([\\w\\-]+)\\/(top|hot|controversial)?\\/?(hour|day|week|month|year|all)?$": postsFromSubReddit
     };
 
     commander.script({
@@ -61,10 +63,6 @@ module.exports = function (commander, logger) {
                         return !post.data.over_18;
                     });
                 }
-
-                posts = _.filter(posts, function(post) {
-                    return !post.data.stickied;
-                });
 
                 for (var i = 0; i < count; i++) {
                     if (i < posts.length) {
