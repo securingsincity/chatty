@@ -7,8 +7,8 @@
         "url": "https://www.hipchat.com"
     },
     "links": {
-        "self": "https://chatty-reddit.herokuapp.com/atlassian-connect.json",
-        "homepage": "https://chatty-reddit.herokuapp.com"
+        "self": "{{localBaseUrl}}/atlassian-connect.json",
+        "homepage": "{{localBaseUrl}}"
     },
     "capabilities": {
         "hipchatApiConsumer": {
@@ -18,13 +18,13 @@
             ]
         },
         "installable": {
-            "callbackUrl": "https://chatty-reddit.herokuapp.com/installable",
+            "callbackUrl": "{{localBaseUrl}}/installable",
             "allowGlobal": false,
             "allowRoom": true
 
         },
         "configurable": {
-             "url": "https://chatty-reddit.herokuapp.com/config"
+             "url": "{{localBaseUrl}}/config"
         }
     }
 }

@@ -62,7 +62,7 @@
     // },
     "store": {
       "adapter": "redis",
-      "url": "redis://pub-redis-13565.us-east-1-3.2.ec2.garantiadata.com:13565"
+      "url": "redis://localhost:6379"
     }
   },
 
@@ -76,7 +76,7 @@
     // that to be honored here.
     "port": "$PORT",
     // This is the public URL to your production add-on.
-    "localBaseUrl": "https://chatty-reddit.herokuapp.com",
+    "localBaseUrl": "https://chatty.herokuapp.com",
     "store": {
       // Let's use Redis as our default data store in prod
       "adapter": "redis",

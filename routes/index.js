@@ -32,30 +32,35 @@ module.exports = function (app, addon) {
     }
   );
 
+  function clientInfoToString(clientInfo) {
+    var str = clientInfo.clientKey +
+      ' @ ' + clientInfo.capabilitiesDoc.links.homepage +
+      ' for group ' + clientInfo.groupName +
+      ':' + clientInfo.groupId;
+    if (clientInfo.roomId) str += ' in room ' + clientInfo.roomId;
+    return str;
+  }
+
   // Notify the room that the add-on was installed
   addon.on('installed', function (clientKey, clientInfo, req) {
     var data = req.body;
     commander.onInstalled(clientInfo).then(function () {
-      addon.logger.info('Tenant installed:', JSON.stringify(clientInfo));
-      hipchat.sendMessage(clientInfo, req.body.roomId, 'The ' + addon.descriptor.name + ' add-on has been installed in this room');
+      addon.logger.info('Tenant installed:', clientInfoToString(clientInfo));
+      hipchat.sendMessage(clientInfo, clientInfo.roomId, 'The ' + addon.descriptor.name + ' add-on has been installed in this room');
     });
   });
 
   // Clean up clients when uninstalled
   addon.on('uninstalled', function (clientKey) {
-    addon.settings.get(clientKey, function (err, result) {
-      if (err) return self.logger.error(err.stack);
-      if (result) {
-        var clientInfo = JSON.parse(result);
-        commander.onUninstalled(clientInfo).then(function () {
-          addon.settings.client.keys(clientKey + ':*', function (err, rep) {
-            rep.forEach(function (k) {
-              addon.settings.client.del(k);
-            });
+    addon.settings.get('clientInfo', clientKey).then(function (clientInfo) {
+      commander.onUninstalled(clientInfo).then(function () {
+        addon.settings.client.keys(clientKey + ':*', function (err, rep) {
+          rep.forEach(function (k) {
+            addon.settings.client.del(k);
           });
-          addon.logger.info('Tenant uninstalled:', JSON.stringify(clientInfo));
         });
-      }
+        addon.logger.info('Tenant uninstalled:', clientInfoToString(clientInfo));
+      });
     });
   });
 
