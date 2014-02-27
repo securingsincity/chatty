@@ -3,6 +3,7 @@ var later = require('later');
 var RSVP = require('rsvp');
 var cliff = require('cliff');
 var crypto = require('crypto');
+var moment = require('moment-timezone');
 
 var DYNO = process.env.DYNO || 'dev.1';
 
@@ -24,12 +25,15 @@ module.exports = function (commander, logger) {
         return response.help('later', [
           '<laterjs-text-expr> /<command> [args]',
           'cancel <id>',
+          // 'timezone [<timezone-name>]',
           'jobs'
         ]);
       } else if (match = /^jobs\s*$/i.exec(event.input)) {
         show(event, response);
       } else if (match = /^cancel\s+([\da-f]+)$/i.exec(event.input)) {
         cancel(event, response, match[1].trim());
+      // } else if (match = /^timezone(?:\s+([\w\/]+))?$/i.exec(event.input)) {
+      //   timezone(event, response, match[1]);
       } else if (match = /^([^\/]+)(\/[\w-]+(?:.*))/i.exec(event.input)) {
         var command = match[2].trim();
         if (command.indexOf('later') === 1) {
@@ -53,6 +57,7 @@ module.exports = function (commander, logger) {
   function startJob(tenant, store, response, job) {
     return new RSVP.Promise(function (resolve, reject) {
       try {
+        later.date.UTC();
         var schedule = later.parse.text(job.spec);
         if (schedule.error === -1) {
           job.handle = later.setInterval(function () {
@@ -75,7 +80,7 @@ module.exports = function (commander, logger) {
         response.send('Sorry, I didn\'t understand the schedule "' + job.spec + '"; error at character ' + err.column);
         store.del(jobKey(job.id));
       } else {
-        logger.error(err);
+        logger.error(err.stack || err);
       }
     });
   }
@@ -97,7 +102,7 @@ module.exports = function (commander, logger) {
         logger.info('Stopped /later job "' + id + '" on worker "' + DYNO + '"');
       }
     }, function (err) {
-      logger.error(err);
+      logger.error(err.stack || err);
     });
   }
 
@@ -126,10 +131,29 @@ module.exports = function (commander, logger) {
     return RSVP.all([]);
   }
 
+  // function timezone(event, response, tz) {
+  //   if (tz) {
+  //     try {
+  //       moment().tz(tz);
+  //     } catch (e) {
+  //       return response.send('I don\'t recognize the timezone "' + tz + '"');
+  //     }
+  //     event.store.set('timezone', tz).then(function () {
+  //       response.send('Timezone set to ' + tz);
+  //     });
+  //   } else {
+  //     event.store.get('timezone').then(function (value) {
+  //       response.send(value ? value : 'No timezone has been set');
+  //     });
+  //   }
+  // }
+
   function show(event, response) {
     event.store.all().then(function (all) {
-      var rows = _.values(all).map(function (job) {
-        return [job.id, ' ', job.spec, ' ', job.command];
+      var rows = _.map(all, function (job, key) {
+        return key.indexOf('job-') === 0 ? [job.id, ' ', job.spec, ' ', job.command] : null;
+      }).filter(function (row) {
+        return !!row;
       }).sort(function (a, b) {
         return a[0] < b[0] ? -1 : (a[0] > b[0] ? 1 : 0);
       });
@@ -147,8 +171,10 @@ module.exports = function (commander, logger) {
   function start(tenant, store, response) {
     commander.work(function () {
       store.all().then(function (all) {
-        _.each(all, function (job) {
-          startJob(tenant, store, response, job);
+        _.each(all, function (job, key) {
+          if (key.indexOf('job-') === 0) {
+            startJob(tenant, store, response, job);
+          }
         });
       });
       store.subscribe('job-added', function (id) {
