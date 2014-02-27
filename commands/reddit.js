@@ -19,20 +19,20 @@ module.exports = function (commander, logger) {
     commander.script({
         help: 'Call up all sorts of reddit shenanigans',
         variables: {
-            nsfwEnabled: {name: 'Enable adult themed (NSFW) content? (Yes/No)', value: "No"}
+            nsfwEnabled: {name: 'Mature (NSFW) content? (Yes/No)', value: "No"}
         }
     });
 
     commander.spy({
         hear: /^r\/(.*?)$/,
-        help: 'Displays the top post from reddit r/[subreddit][/filter][/duration] i.e. r/gifs/top/month',
+        help: 'Displays the top post from reddit',
         action: onSpyMessage
     });
 
     commander.command({
-        name: "r",
-        args: "help|r/subreddit[</filter>][</duration>]|watch r/subreddit[</filter>][</duration>] [<minimumScore>]",
-        help: "Displays the top post from reddit /r/[subreddit][/filter][/duration] i.e. /r/gifs/top/month",
+        name: ["r", "reddit"],
+        args: "[help]",
+        help: "Displays the top post from reddit",
         action: onCommandMessage
     });
 
@@ -41,8 +41,8 @@ module.exports = function (commander, logger) {
         var match;
         if (!event.input || /^help\b/i.test(event.input)) {
             return response.help('r', [
-                'r/<subreddit></filter></duration>',
-                'r/<subreddit></filter></duration> watch <minimumSCore>'
+                'r/<subreddit>[/<filter>[/<duration>]]',
+                'r/<subreddit>[/<filter>[/<duration>[ watch <minimum-score>]]]'
             ]);
         } else if (match = watchMatcher.exec(event.input)) {
             var matches = match.slice(1);
