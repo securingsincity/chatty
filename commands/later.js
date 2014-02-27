@@ -10,7 +10,7 @@ var DYNO = process.env.DYNO || 'dev.1';
 module.exports = function (commander, logger) {
 
   commander.script({
-    help: 'A command for executing other commands on schedule',
+    help: 'A command for executing other commands on a UTC schedule',
     start: start,
     stop: stop
   });
@@ -18,7 +18,7 @@ module.exports = function (commander, logger) {
   commander.command({
     name: 'later',
     args: '[help]',
-    help: 'Runs a command according to a schedule',
+    help: 'Runs a command according to a UTC schedule',
     action: function (event, response) {
       var match;
       if (!event.input || /^help\b/i.test(event.input)) {
