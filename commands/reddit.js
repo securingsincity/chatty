@@ -19,7 +19,7 @@ module.exports = function (commander, logger) {
     commander.script({
         help: 'Call up all sorts of reddit shenanigans',
         variables: {
-            nsfwEnabled: {name: 'Mature (NSFW) content? (Yes/No)', value: "No"}
+            nsfwEnabled: {name: 'NSFW? (Yes/No)', value: "No"}
         }
     });
 
