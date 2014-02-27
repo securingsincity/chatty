@@ -47,7 +47,8 @@ module.exports = function (commander, logger) {
         event.store.gset(subject, karma).then(function () {
           var changed = (add ? 'increased' : 'decreased');
           var name = displayName(event, subject);
-          response.send(name + '\'s karma has ' + changed + ' to ' + karma);
+          name += '\'' + (name.charAt(name.length - 1) === 's' ? '' : 's');
+          response.send(name + ' karma has ' + changed + ' to ' + karma);
         });
       });
     }
