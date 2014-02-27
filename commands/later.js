@@ -25,15 +25,12 @@ module.exports = function (commander, logger) {
         return response.help('later', [
           '<laterjs-text-expr> /<command> [args]',
           'cancel <id>',
-          // 'timezone [<timezone-name>]',
           'jobs'
         ]);
       } else if (match = /^jobs\s*$/i.exec(event.input)) {
         show(event, response);
       } else if (match = /^cancel\s+([\da-f]+)$/i.exec(event.input)) {
         cancel(event, response, match[1].trim());
-      // } else if (match = /^timezone(?:\s+([\w\/]+))?$/i.exec(event.input)) {
-      //   timezone(event, response, match[1]);
       } else if (match = /^([^\/]+)(\/[\w-]+(?:.*))/i.exec(event.input)) {
         var command = match[2].trim();
         if (command.indexOf('later') === 1) {
@@ -54,16 +51,17 @@ module.exports = function (commander, logger) {
 
   var jobs = {};
 
-  function startJob(tenant, store, response, job) {
+  function startJob(tenant, store, response, job, reply) {
     return new RSVP.Promise(function (resolve, reject) {
       try {
         later.date.UTC();
         var schedule = later.parse.text(job.spec);
         if (schedule.error === -1) {
           job.handle = later.setInterval(function () {
+            logger.info('Executing job ' + job.id + ' for tenant ' + tenant.clientKey);
             commander.execute(job.command, tenant, job.from, response.send);
           }, schedule);
-          resolve(job.handle);
+          resolve();
         } else {
           var err = new Error('Invalid schedule: "' + job.spec + '"');
           err.column = schedule.error;
@@ -74,7 +72,10 @@ module.exports = function (commander, logger) {
       }
     }).then(function () {
       tenantJobs(tenant)[job.id] = job;
-      logger.info('Started /later job "' + job.id + '" on worker "' + DYNO + '"');
+      logger.info('Started /later job ' + job.id + ' for tenant ' + tenant.clientKey + ' on worker ' + DYNO);
+      if (reply) {
+        response.send('Ok, I scheduled that command');
+      }
     }, function (err) {
       if (err.column) {
         response.send('Sorry, I didn\'t understand the schedule "' + job.spec + '"; error at character ' + err.column);
@@ -85,7 +86,7 @@ module.exports = function (commander, logger) {
     });
   }
 
-  function stopJob(tenant, store, response, id) {
+  function stopJob(tenant, store, response, id, reply) {
     var job = tenantJobs(tenant)[id];
     return new RSVP.Promise(function (resolve, reject) {
       if (job) {
@@ -94,12 +95,15 @@ module.exports = function (commander, logger) {
         }
         resolve();
       } else {
-        reject(new Error('Failed to stop job "' + id + '": not found'));
+        reject(new Error('Failed to stop job ' + id + ': not found'));
       }
     }).then(function () {
       if (job) {
         delete tenantJobs(tenant)[id];
-        logger.info('Stopped /later job "' + id + '" on worker "' + DYNO + '"');
+        logger.info('Stopped /later job ' + id + ' for tenant ' + tenant.clientKey + ' on worker ' + DYNO);
+        if (reply) {
+          response.send('Ok, I canceled that command');
+        }
       }
     }, function (err) {
       logger.error(err.stack || err);
@@ -131,23 +135,6 @@ module.exports = function (commander, logger) {
     return RSVP.all([]);
   }
 
-  // function timezone(event, response, tz) {
-  //   if (tz) {
-  //     try {
-  //       moment().tz(tz);
-  //     } catch (e) {
-  //       return response.send('I don\'t recognize the timezone "' + tz + '"');
-  //     }
-  //     event.store.set('timezone', tz).then(function () {
-  //       response.send('Timezone set to ' + tz);
-  //     });
-  //   } else {
-  //     event.store.get('timezone').then(function (value) {
-  //       response.send(value ? value : 'No timezone has been set');
-  //     });
-  //   }
-  // }
-
   function show(event, response) {
     event.store.all().then(function (all) {
       var rows = _.map(all, function (job, key) {
@@ -178,16 +165,14 @@ module.exports = function (commander, logger) {
         });
       });
       store.subscribe('job-added', function (id) {
+        logger.info('--- DEBUG: job-added with id ' + id + ' for tenant ' + tenant.clientKey);
         store.get(jobKey(id)).then(function (job) {
-          startJob(tenant, store, response, job).then(function () {
-            response.send('Ok, I scheduled that command');
-          });
+          startJob(tenant, store, response, job, true);
         });
       });
       store.subscribe('job-canceled', function (id) {
-        stopJob(tenant, store, response, id).then(function () {
-          response.send('Ok, I canceled that command');
-        });
+        logger.info('--- DEBUG: job-canceled with id ' + id + ' for tenant ' + tenant.clientKey);
+        stopJob(tenant, store, response, id, true);
       });
     });
   }
