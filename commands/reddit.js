@@ -5,7 +5,7 @@ module.exports = function (commander, logger) {
 
     var postTemplate = _.template("<%= title %> <%= url %>");
 
-    var watchMatcher = /^watch\sr\/([\w\-]+)\/?(top|hot|controversial)?\/?(hour|day|week|month|year|all)?\s?([0-9]*)$/;
+    var watchMatcher = /^watch\s([\w\-]+)\/?(top|hot|controversial)?\/?(hour|day|week|month|year|all)?\s?([0-9]*)$/;
 
     var noRepeats = true;
 
@@ -41,8 +41,9 @@ module.exports = function (commander, logger) {
         var match;
         if (!event.input || /^help\b/i.test(event.input)) {
             return response.help('r', [
-                'r/<subreddit>[/<filter>[/<duration>]]',
-                'r/<subreddit>[/<filter>[/<duration>[ watch <minimum-score>]]]'
+                '<subreddit>[/<filter>][/<duration>]',
+                '<subreddit>[/<filter>][/<duration>]',
+                'watch <subreddit>[/<filter>][/<duration>] [<minimum-score>]'
             ]);
         } else if (match = watchMatcher.exec(event.input)) {
             var matches = match.slice(1);
