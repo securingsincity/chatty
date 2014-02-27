@@ -31,12 +31,14 @@ module.exports = function (commander, logger) {
   });
 
   commander.spy({
-    hear: /(?:^|\s|@)(\w+)\s?(\+\+|--)(?:\s|$)/,
+    hear: /(^|\s|@)(\w+)(\s?)(\+\+|--)(?:\s|$)/,
     help: 'Adds or removes karma',
     action: function (event, response) {
-      var subject = event.captures[0];
-      if (ignore(subject)) return;
-      var add = event.captures[1] === '++';
+      var isMention = event.captures[0] === '@';
+      var subject = event.captures[1];
+      var hasSpace = !!event.captures[2];
+      if (ignore(subject) || (!isMention && hasSpace)) return;
+      var add = event.captures[3] === '++';
       if (ignore(subject) || event.from.mention_name === subject) {
         return response.send(event.from.name + ', I am so disappointed in you!');
       }
