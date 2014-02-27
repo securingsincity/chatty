@@ -77,7 +77,7 @@ module.exports = function (commander, logger) {
         response.send('Ok, I scheduled that command');
       }
     }, function (err) {
-      if (err.column) {
+      if (err.column >= 0) {
         response.send('Sorry, I didn\'t understand the schedule "' + job.spec + '"; error at character ' + err.column);
         store.del(jobKey(job.id));
       } else {
@@ -89,6 +89,7 @@ module.exports = function (commander, logger) {
   function stopJob(tenant, store, response, id, reply) {
     var job = tenantJobs(tenant)[id];
     return new RSVP.Promise(function (resolve, reject) {
+      delete tenantJobs(tenant)[id];
       if (job) {
         if (job.handle && job.handle.clear) {
           job.handle.clear();
@@ -99,7 +100,6 @@ module.exports = function (commander, logger) {
       }
     }).then(function () {
       if (job) {
-        delete tenantJobs(tenant)[id];
         logger.info('Stopped /later job ' + id + ' for tenant ' + tenant.clientKey + ' on worker ' + DYNO);
         if (reply) {
           response.send('Ok, I canceled that command');
@@ -165,13 +165,11 @@ module.exports = function (commander, logger) {
         });
       });
       store.subscribe('job-added', function (id) {
-        logger.info('--- DEBUG: job-added with id ' + id + ' for tenant ' + tenant.clientKey);
         store.get(jobKey(id)).then(function (job) {
           startJob(tenant, store, response, job, true);
         });
       });
       store.subscribe('job-canceled', function (id) {
-        logger.info('--- DEBUG: job-canceled with id ' + id + ' for tenant ' + tenant.clientKey);
         stopJob(tenant, store, response, id, true);
       });
     });
