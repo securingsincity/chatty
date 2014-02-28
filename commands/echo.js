@@ -5,7 +5,7 @@ module.exports = function (commander, logger) {
   });
 
   commander.command({
-    name: 'echo',
+    name: ['echo', 'say'],
     args: '<message>',
     help: 'Prints the given message',
     action: function (event, response) {
