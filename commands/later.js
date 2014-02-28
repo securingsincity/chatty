@@ -5,8 +5,6 @@ var cliff = require('cliff');
 var crypto = require('crypto');
 var moment = require('moment-timezone');
 
-var DYNO = process.env.DYNO || 'dev.1';
-
 module.exports = function (commander, logger) {
 
   commander.script({
@@ -23,14 +21,14 @@ module.exports = function (commander, logger) {
       var match;
       if (!event.input || /^help\b/i.test(event.input)) {
         return response.help('later', [
-          '<laterjs-text-expr> /<command> [args]',
-          'cancel <id>',
-          'jobs'
+          '<laterjs-text-expr> /<command> [args]    <b>Note: UTC times required</b>',
+          'cancel|stop <id>',
+          'show|jobs'
         ]);
-      } else if (match = /^jobs\s*$/i.exec(event.input)) {
-        show(event, response);
-      } else if (match = /^cancel\s+([\da-f]+)$/i.exec(event.input)) {
+      } else if (match = /^(?:cancel|stop)\s+([\da-f]+)$/i.exec(event.input)) {
         cancel(event, response, match[1].trim());
+      } else if (match = /^(?:jobs|show)\s*$/i.exec(event.input)) {
+        show(event, response);
       } else if (match = /^([^\/]+)(\/[\w-]+(?:.*))/i.exec(event.input)) {
         var command = match[2].trim();
         if (command.indexOf('later') === 1) {
@@ -72,13 +70,13 @@ module.exports = function (commander, logger) {
       }
     }).then(function () {
       tenantJobs(tenant)[job.id] = job;
-      logger.info('Started /later job ' + job.id + ' for tenant ' + tenant.clientKey + ' on worker ' + DYNO);
+      logger.info('Started /later job ' + job.id + ' for tenant ' + tenant.clientKey);
       if (reply) {
         response.send('Ok, I scheduled that command');
       }
     }, function (err) {
       if (err.column >= 0) {
-        response.send('Sorry, I didn\'t understand the schedule "' + job.spec + '"; error at character ' + err.column);
+        response.send('Sorry, I didn\'t understand the schedule "' + job.spec + '": error at character ' + err.column + ' -- get help at http://bunkat.github.io/later/parsers.html#text');
         store.del(jobKey(job.id));
       } else {
         logger.error(err.stack || err);
@@ -86,7 +84,7 @@ module.exports = function (commander, logger) {
     });
   }
 
-  function stopJob(tenant, store, response, id, reply) {
+  function stopJob(tenant, store, response, id, found, reply) {
     var job = tenantJobs(tenant)[id];
     return new RSVP.Promise(function (resolve, reject) {
       delete tenantJobs(tenant)[id];
@@ -95,12 +93,15 @@ module.exports = function (commander, logger) {
           job.handle.clear();
         }
         resolve();
+      } else if (found === 0) {
+        response.send('Oh-oh, I couldn\'t find a job with id ' + id + '...');
+        resolve();
       } else {
-        reject(new Error('Failed to stop job ' + id + ': not found'));
+        reject(new Error('Failed to cancel job ' + id + ': not found'));
       }
     }).then(function () {
       if (job) {
-        logger.info('Stopped /later job ' + id + ' for tenant ' + tenant.clientKey + ' on worker ' + DYNO);
+        logger.info('Stopped /later job ' + id + ' for tenant ' + tenant.clientKey);
         if (reply) {
           response.send('Ok, I canceled that command');
         }
@@ -122,14 +123,16 @@ module.exports = function (commander, logger) {
     return event.store.set(jobKey(job.id), job).then(function () {
       event.store.publish('job-added', job.id);
     }, function (err) {
+      if (err) logger.warn(err.stack || err);
       response.confused();
     });
   }
 
   function cancel(event, response, id) {
-    return event.store.del(jobKey(id)).then(function () {
-      event.store.publish('job-canceled', id);
+    return event.store.del(jobKey(id)).then(function (count) {
+      event.store.publish('job-canceled', JSON.stringify({id: id, found: count}));
     }, function (err) {
+      if (err) logger.warn(err.stack || err);
       response.confused();
     });
     return RSVP.all([]);
@@ -169,8 +172,9 @@ module.exports = function (commander, logger) {
           startJob(tenant, store, response, job, true);
         });
       });
-      store.subscribe('job-canceled', function (id) {
-        stopJob(tenant, store, response, id, true);
+      store.subscribe('job-canceled', function (json) {
+        var payload = JSON.parse(json);
+        stopJob(tenant, store, response, payload.id, payload.found, true);
       });
     });
   }
@@ -179,7 +183,7 @@ module.exports = function (commander, logger) {
     commander.work(function () {
       store.all().then(function (all) {
         _.each(all, function (job) {
-          stopJob(tenant, store, response, job.id);
+          stopJob(tenant, store, response, job.id, 1, false);
         });
       });
       store.unsubscribe('job-added');
