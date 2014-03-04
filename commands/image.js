@@ -74,13 +74,14 @@ module.exports = function (commander, logger) {
             if (image && image.unescapedUrl) {
               var url = image.unescapedUrl;
               if (!/(.gif|.jpe?g|.png)$/i.test(url)) {
-                url =  + '#.png';
+                url += '#.png';
               }
-              next(url);
+              return next(url);
             }
           }
         }
       }
+      next('I didn\'t find any matching images');
     });
   }
 

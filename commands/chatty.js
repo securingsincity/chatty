@@ -13,7 +13,7 @@ module.exports = function (commander, logger) {
     help: 'Chatty help',
     opts: {format: 'html'},
     action: function (event, response) {
-      var matchl
+      var match;
       if (!event.input || (match = /^help\b/i.exec(event.input))) {
         var helpUrl = commander.addon.config.localBaseUrl() + '/help';
         response.help('chatty', 'See <a href="' + helpUrl + '">all commands and spies</a>', [
