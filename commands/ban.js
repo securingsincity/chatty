@@ -6,7 +6,7 @@ module.exports = function (commander, logger) {
     help: 'Fake Ban'
   });
 
-  commander.spy({
+  commander.command({
     name: 'ban',
     args: '[<word>]',
     help: 'Replies with a random ban message',
