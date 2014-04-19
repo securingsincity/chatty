@@ -19,7 +19,7 @@
         },
         "installable": {
             "callbackUrl": "{{localBaseUrl}}/installable",
-            "allowGlobal": false,
+            "allowGlobal": true,
             "allowRoom": true
 
         },
