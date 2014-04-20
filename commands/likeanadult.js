@@ -3,12 +3,12 @@
 module.exports = function (commander, logger) {
 
   commander.script({
-    help: 'A spy for giving a round of appluase'
+    help: 'A spy for when you need to be an adult'
   });
 
   commander.spy({
     hear: /like an adult/i,
-    help: 'Replies with  a round of appluase',
+    help: 'Replies pics of you being an adult',
     action: action
   });
 

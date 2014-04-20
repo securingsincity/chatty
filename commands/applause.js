@@ -6,12 +6,12 @@
 module.exports = function (commander, logger) {
 
   commander.script({
-    help: 'A spy for displaying a "like an adult image"'
+    help: 'A spy for a round of applause'
   });
 
   commander.spy({
     hear: /applau(d|se)|bravo|sarcastic applause|(slow|sarcastic) clap/i,
-    help: 'Replies with a random "like an adult" image',
+    help: 'Replies an applause',
     action: action
   });
 
