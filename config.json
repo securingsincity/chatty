@@ -62,7 +62,7 @@
     // },
     "store": {
       "adapter": "redis",
-      "url": "redis://localhost:6379"
+      "url": "redis://rediscloud:cYDtSnlEsCqItfK2@pub-redis-15876.us-east-1-1.2.ec2.garantiadata.com:15876"
     }
   },
 
@@ -76,13 +76,13 @@
     // that to be honored here.
     "port": "$PORT",
     // This is the public URL to your production add-on.
-    "localBaseUrl": "https://chatty.herokuapp.com",
+    "localBaseUrl": "http://maxwell-chatty.herokuapp.com/",
     "store": {
       // Let's use Redis as our default data store in prod
       "adapter": "redis",
       // Again, a PaaS host like Heroku will probably provide the db connection
       // URL to you through the environment, so we tell atlassian-connect-express to use that value.
-      "url": "$REDISTOGO_URL"
+      "url": "redis://rediscloud:cYDtSnlEsCqItfK2@pub-redis-15876.us-east-1-1.2.ec2.garantiadata.com:15876"
     },
     // Make sure that your add-on can only be registered by the hosts on
     // these domains.
