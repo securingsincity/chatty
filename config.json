@@ -6,7 +6,7 @@
     // need to use a local tunnel tool (we highly recommend https://ngrok.com)
     // to make your local add-on server accessible from the internet. You'll also
     // need to specify this property with the base URL of your tunnel:
-     "localBaseUrl": "http://maxwell-chatty.herokuapp.com/",
+     "localBaseUrl": "http://maxwell-chatty.herokuapp.com",
 
     // HipChat add-ons don't use asymmetric key algos
     "usePublicKey": false,
@@ -76,7 +76,7 @@
     // that to be honored here.
     "port": "$PORT",
     // This is the public URL to your production add-on.
-    "localBaseUrl": "http://maxwell-chatty.herokuapp.com/",
+    "localBaseUrl": "http://maxwell-chatty.herokuapp.com",
     "store": {
       // Let's use Redis as our default data store in prod
       "adapter": "redis",
