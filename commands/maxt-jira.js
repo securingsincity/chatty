@@ -13,8 +13,10 @@ module.exports = function (commander, logger) {
   });
 
   function action(event, response) {
+    console.log(event.message);
     var maxt = event.message.match(/(MAXT-[0-9][0-9][0-9][0-9])|(MAXT-[0-9][0-9][0-9])/i);
     console.log(maxt);
+
     response.send("https://maxwellhealth.atlassian.net/browse/"+maxt[0]);
 
   }
