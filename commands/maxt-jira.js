@@ -7,7 +7,7 @@ module.exports = function (commander, logger) {
   });
 
   commander.spy({
-    hear: /(MAXT-[0-9][0-9][0-9][0-9][0-9])(MAXT-[0-9][0-9][0-9][0-9])|(MAXT-[0-9][0-9][0-9])/i,
+    hear: /(MAXT-[0-9][0-9][0-9][0-9][0-9])|(MAXT-[0-9][0-9][0-9][0-9])|(MAXT-[0-9][0-9][0-9])/i,
     help: 'JIRA MAXT to key',
     action: action
   });
