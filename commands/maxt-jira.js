@@ -13,7 +13,8 @@ module.exports = function (commander, logger) {
   });
 
   function action(event, response) {
-    response.send("https://maxwellhealth.atlassian.net/browse/MAXT-1241");
+
+    response.send("https://maxwellhealth.atlassian.net/browse/MAXT-1241 - "+event.message);
 
   }
 };
