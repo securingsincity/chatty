@@ -13,7 +13,7 @@ module.exports = function (commander, logger) {
   });
 
   function action(event, response) {
-    var maxt = event.message.match(/(MAXT-[0-9][0-9][0-9][0-9][0-9])(MAXT-[0-9][0-9][0-9][0-9])|(MAXT-[0-9][0-9][0-9])/i);
+    var maxt = event.message.exec(/(MAXT-[0-9][0-9][0-9][0-9][0-9])(MAXT-[0-9][0-9][0-9][0-9])|(MAXT-[0-9][0-9][0-9])/i);
     response.send("https://maxwellhealth.atlassian.net/browse/"+maxt);
 
   }
