@@ -13,7 +13,7 @@ module.exports = function (commander, logger) {
   });
 
   function action(event, response) {
-    console.log(event);
-    console.log(response);
+    response.send(event);
+    //console.log(response);
   }
 };
