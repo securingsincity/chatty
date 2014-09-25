@@ -7,16 +7,15 @@ module.exports = function (commander, logger) {
   });
 
   commander.spy({
-    hear: /(MAXT-[0-9][0-9][0-9][0-9][0-9])|(MAXT-[0-9][0-9][0-9][0-9])|(MAXT-[0-9][0-9][0-9])/i,
+    hear: /(MAXT-[0-9][0-9][0-9][0-9])|(MAXT-[0-9][0-9][0-9])/i,
     help: 'JIRA MAXT to key',
     action: action
   });
 
   function action(event, response) {
-    var re = /(MAXT-[0-9][0-9][0-9][0-9][0-9])|(MAXT-[0-9][0-9][0-9][0-9])|(MAXT-[0-9][0-9][0-9])/i;
-    //var maxt = re.exec(event.message);
-    var maxt = event.message.match(re)[0];
-    response.send("https://maxwellhealth.atlassian.net/browse/"+maxt);
+    var maxt = event.message.match(/(MAXT-[0-9][0-9][0-9][0-9])|(MAXT-[0-9][0-9][0-9])/i);
+    console.log(maxt);
+    response.send("https://maxwellhealth.atlassian.net/browse/"+maxt[0]);
 
   }
 };
