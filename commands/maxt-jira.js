@@ -13,7 +13,8 @@ module.exports = function (commander, logger) {
   });
 
   function action(event, response) {
-    response.send(event);
-    //console.log(response);
+    console.log(event);
+    response.send("event : "+ event.input);
+    console.log(response);
   }
 };
