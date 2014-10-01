@@ -15,6 +15,11 @@ module.exports = function (commander, logger) {
   function action(event, response) {
     response.random([
       'saucelabs? i fu**ing hate those guys - fern',
+      'https://s3.amazonaws.com/uploads.hipchat.com/102551/759683/ehqDKCZFahvXAbP/ferntounge.gif',
+      'I\'m making a tindr for gifs - fern',
+      'lego.js - fern',
+      'styles and bugs - fern',
+      'I wouldn\'t call it done per se - fern',
       'crosshit - fern',
       'ETSY!!!!!! - fern',
       'Who is f*cking with my zen - fern',
