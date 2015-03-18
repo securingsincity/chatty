@@ -23,7 +23,8 @@ module.exports = function (commander, logger) {
       'crosshit - fern',
       'ETSY!!!!!! - fern',
       'Who is f*cking with my zen - fern',
-      'well you know the government... - fern'
+      'well you know the government... - fern',
+      'f*ck WordPress - fern'
     ]);
   }
 
