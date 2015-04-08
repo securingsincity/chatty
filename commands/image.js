@@ -53,6 +53,9 @@ module.exports = function (commander, logger) {
     if (typeof faces === 'function') {
       next = faces;
     }
+    if (query === 'classic barr') {
+      return next('http://blog.jasonraede.com/classicbarr.jpg');
+    }
     var q = {v: '1.0', rsz: '8', q: query, safe: 'active'};
     if (typeof animated === 'boolean' && animated === true) {
       q.imgtype = 'animated';
