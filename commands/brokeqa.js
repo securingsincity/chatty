@@ -5,7 +5,7 @@ module.exports = function (commander, logger) {
   });
 
   commander.spy({
-    hear: /\b(i\s+broke\s+qa)|(qa\s+is\s+broken)|(qa\s+broke)|(broke\s+the\s+build)|(build\s+is\s+broken)|(broke\s+the\s+build)\b/i,
+    hear: /\b(i\s+broke\s+qa)|(qa\s+is\s+broken)|(qa\s+broke)|(broke\s+the\s+build)|(build\s+is\s+broken)\b/i,
     help: 'How you feel when you break the build',
     action: action
   });
