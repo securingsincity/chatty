@@ -56,6 +56,9 @@ module.exports = function (commander, logger) {
     if (query === 'classic barr') {
       return next('http://blog.jasonraede.com/classicbarr.jpg');
     }
+    if (query === 'funky') {
+      return next('https://s3.amazonaws.com/uploads.hipchat.com/102551/917321/5R25Anuxn5n3kCI/arthurjon.gif');
+    }
     var q = {v: '1.0', rsz: '8', q: query, safe: 'active'};
     if (typeof animated === 'boolean' && animated === true) {
       q.imgtype = 'animated';
