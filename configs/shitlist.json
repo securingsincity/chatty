@@ -1235,53 +1235,6 @@
       ]
     },
     {
-      "id": 10040182552945,
-      "created_at": "2014-02-04T16:18:23.724Z",
-      "modified_at": "2014-02-04T16:18:30.458Z",
-      "name": "No Longer Hates:",
-      "notes": "",
-      "assignee": null,
-      "completed": false,
-      "assignee_status": "upcoming",
-      "completed_at": null,
-      "due_on": null,
-      "due_at": null,
-      "tags": [],
-      "workspace": {
-        "id": 7769919146419,
-        "name": "maxwellhealth.com"
-      },
-      "num_hearts": 0,
-      "parent": null,
-      "subtasks": [],
-      "hearted": false,
-      "hearts": [],
-      "projects": [
-        {
-          "id": 10040182552902,
-          "name": "Things Fern hates"
-        }
-      ],
-      "memberships": [
-        {
-          "section": {
-            "id": 10040182552945,
-            "name": "No Longer Hates:"
-          },
-          "project": {
-            "id": 10040182552902,
-            "name": "Things Fern hates"
-          }
-        }
-      ],
-      "followers": [
-        {
-          "id": 9729779977018,
-          "name": "james"
-        }
-      ]
-    },
-    {
       "id": 10077744197680,
       "created_at": "2014-02-06T22:02:15.001Z",
       "modified_at": "2014-02-12T22:44:43.451Z",
@@ -1346,6 +1299,18 @@
           "name": "Pat"
         }
       ]
+    },
+    {
+      "name": "Ziggy's"
+    },
+    {
+      "name": "peets coffee"
+    },
+    {
+      "name": "media temple"
+    },
+    {
+      "name": "romanians"
     }
   ]
 }
